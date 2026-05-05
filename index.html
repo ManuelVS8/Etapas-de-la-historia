@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en" translate="no">
+<html lang="en" translate="no" class="notranslate">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
     <meta name="google" content="notranslate">
-    <title>Prehistory</title>
+    <title>History</title>
     <link rel="icon" type="image/x-icon" href="https://raw.githubusercontent.com/ManuelVS8/Audios-juegos-SCIENCE/refs/heads/main/icono.ico">
     <style>
         /* ====== Reset & base ====== */
@@ -27,6 +27,8 @@
             --pastel-red:#f4a6a0;
             --pastel-green:#a8e6cf;
             --pastel-yellow:#ffe066;
+            --pastel-purple:#c8b6ff;
+            --pastel-sky:#a0d8ef;
         }
         body{
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -44,7 +46,7 @@
             display:flex; flex-direction:column;
             margin-bottom: 2rem; 
         }
-        header{ text-align:center; margin-bottom:.8rem; margin-top:1.5rem; }
+        header{ text-align:center; margin-bottom:.8rem; margin-top:3.2rem; }
         h1{ color:var(--blue-dark); font-size:clamp(2rem,5.2vw,3.1rem); font-weight:900; letter-spacing:.5px; }
         .subtitle{ color:var(--blue-700); font-size:clamp(1rem,3.5vw,1.25rem); margin-top:.25rem; }
         .highlight-keyword{ color:var(--orange); font-weight:800; }
@@ -107,150 +109,252 @@
             color:var(--blue-700); max-width:760px; text-align:center; font-size:clamp(1rem,3vw,1.15rem); }
         .start-image{ max-width: 300px; width: 100%; margin: 0 auto; }
 
-        /* Pantalla Resumen */
-        .theory-content { padding: 10px; margin: 10px 0; width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
-        .theory-box { background: transparent; border-radius: 12px; padding: 1.2rem 1.4rem; line-height: 1.7; color: #444; font-size: clamp(0.85rem, 2.5vw, 1.05rem); }
-        .theory-box h2 { color: var(--blue-dark); font-size: clamp(1.1rem, 3vw, 1.3rem); margin-bottom: 0.6rem; font-weight: 900; }
-        .theory-box > p { margin-bottom: 0.8rem; }
-        .theory-box ul { list-style: none; padding: 0; margin-bottom: 0.5rem; }
-        .theory-box li { padding: 0.35rem 0 0.35rem 1.4rem; position: relative; }
-        .theory-box li::before { content: '•'; position: absolute; left: 0; color: var(--orange); font-weight: bold; font-size: 1.2em; }
-        .theory-box li strong { color: var(--blue-dark); }
-
-        .theory-block { border-radius: 10px; padding: 1rem 1.2rem; margin-top: 0.8rem; }
-        .theory-block h3 { font-size: clamp(1rem, 2.8vw, 1.15rem); margin-bottom: 0.5rem; font-weight: 800; }
-        .theory-block p { margin-bottom: 0.5rem; }
-        .theory-block ul { list-style: none; padding: 0; margin: 0; }
-        .theory-block li { padding: 0.3rem 0 0.3rem 1.3rem; position: relative; }
-        .theory-block li::before { content: '•'; position: absolute; left: 0; font-weight: bold; font-size: 1.2em; }
-        .theory-block li strong { font-weight: 700; }
-
-        .theory-block-paleo { background: #fdecea; border-left: 4px solid var(--pastel-red); }
-        .theory-block-paleo h3 { color: #c0392b; }
-        .theory-block-paleo li::before { color: var(--pastel-red); }
-        .theory-block-paleo li strong { color: #c0392b; }
-
-        .theory-block-neo { background: #e8f5e9; border-left: 4px solid var(--pastel-green); }
-        .theory-block-neo h3 { color: #27ae60; }
-        .theory-block-neo li::before { color: var(--pastel-green); }
-        .theory-block-neo li strong { color: #27ae60; }
-
-        .theory-block-metals { background: #fff8e1; border-left: 4px solid var(--pastel-yellow); }
-        .theory-block-metals h3 { color: #f39c12; }
-        .theory-block-metals li::before { color: var(--pastel-yellow); }
-        .theory-block-metals li strong { color: #f39c12; }
-
-        .theory-summary-table {
-            width: 100%; border-collapse: collapse; margin-top: 0.6rem; font-size: clamp(0.78rem, 2.2vw, 0.95rem);
-            border-radius: 10px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.06); table-layout: fixed;
-        }
-        .theory-summary-table th {
-            padding: 0.6rem 0.5rem; text-align: center; font-weight: 800; color: #fff; font-size: clamp(0.82rem, 2.4vw, 1rem);
-            width: 33.33%;
-        }
-        .theory-summary-table th:nth-child(1) { background: #c0392b; }
-        .theory-summary-table th:nth-child(2) { background: #27ae60; }
-        .theory-summary-table th:nth-child(3) { background: #f39c12; }
-        .theory-summary-table td {
-            padding: 0.55rem 0.5rem; border: 1px solid #e0e0e0; vertical-align: top; text-align: left; line-height: 1.5;
-            width: 33.33%;
-        }
-        .theory-summary-table tr:nth-child(even) td { background: #fafafa; }
-        .theory-summary-table td strong { color: var(--blue-dark); }
-        .highlight-date { color: var(--orange); font-weight: 800; }
-
-        /* Juegos genéricos */
-        .game-container-generic {
-            display: flex; flex-direction: column; align-items: center; gap: 1rem;
-            width: 100%; max-width: 800px; margin: 0 auto; flex: 1;
-        }
-        .image-display {
-            width: 100%; max-width: 600px; aspect-ratio: 4 / 3;
-            display: flex; justify-content: center; align-items: center;
-            background: transparent; padding: 0; border: none; box-shadow: none; border-radius: 0;
-            overflow: hidden;
-        }
-        .image-display img {
-            width: 100%; height: 100%; object-fit: contain;
-            border-radius: 10px;
-            filter: drop-shadow(0 4px 12px rgba(0,0,0,0.15));
-            transition: none;
-        }
-        .image-display img:hover { transform: none; }
-
-        /* Juego 1: Definiciones */
-        .game1-wrapper { display: flex; flex-direction: column; align-items: center; gap: 1.2rem; width: 100%; max-width: 600px; margin: 0 auto; flex: 1; justify-content: flex-start; padding-top: 0.5rem; }
-        .game1-card {
-            background: #fff;
-            border-radius: 18px;
-            padding: 2.2rem 2rem;
-            width: 100%;
-            text-align: center;
-            font-size: clamp(1.25rem, 3.5vw, 1.6rem);
-            color: var(--blue-dark);
-            font-weight: 600;
-            line-height: 1.6;
-            border: 2px solid #e0e0e0;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.1), 0 2px 6px rgba(0,0,0,0.06);
-            transition: border-color 0.2s, box-shadow 0.2s;
-            position: relative;
-            min-height: 160px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .game1-card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0;
-            height: 6px;
-            background: linear-gradient(90deg, var(--pastel-red), var(--pastel-green), var(--pastel-yellow));
-            border-radius: 18px 18px 0 0;
-        }
-        .game1-card.flash-error { border-color: var(--red); animation: shake 0.3s ease-in-out; }
-        .game1-buttons { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; width: 100%; }
-        .game1-buttons .btn { flex: 1; min-width: 0; font-size: clamp(0.9rem, 2.5vw, 1.1rem); padding: 0.9rem 0.6rem; height: auto; min-height: 70px; border-radius: 14px; letter-spacing: 0.3px; flex-direction: column; gap: 0.3rem; }
-        .game1-buttons .btn-icon { font-size: clamp(1.8rem, 4.5vw, 2.4rem); line-height: 1; display: block; }
-        .game1-buttons .btn-label { font-size: clamp(0.85rem, 2.2vw, 1rem); display: block; }
-        .btn-paleo { background: var(--pastel-red); color: #7b241c; }
-        .btn-paleo:hover { filter: brightness(0.92); }
-        .btn-neo { background: var(--pastel-green); color: #1e6f42; }
-        .btn-neo:hover { filter: brightness(0.92); }
-        .btn-metals { background: var(--pastel-yellow); color: #7d6608; }
-        .btn-metals:hover { filter: brightness(0.92); }
-
-        /* Juegos 2, 3, 4: Grid de tarjetas */
-        .game-grid-common {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-            gap: 8px;
+        /* ====== Pantalla Resumen — Acordeones ====== */
+        .summary-wrapper {
+            padding: 0.4rem 0 1rem;
             width: 100%;
             flex: 1;
             overflow-y: auto;
-            padding: 0.5rem;
-            align-content: start;
+        }
+        .accordion-item {
+            border-radius: 14px;
+            margin-bottom: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+            border: 1px solid #e8e8e8;
+            transition: box-shadow .25s ease;
+        }
+        .accordion-item:hover {
+            box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+        }
+        .accordion-item.antigua-acc .accordion-header {
+            background: linear-gradient(135deg, #c8b6ff 0%, #a78bfa 100%);
+        }
+        .accordion-item.media-acc .accordion-header {
+            background: linear-gradient(135deg, #a0d8ef 0%, #7ec8e3 100%);
+        }
+        .accordion-item.moderna-acc .accordion-header {
+            background: linear-gradient(135deg, #ffe066 0%, #ffd43b 100%);
+        }
+        .accordion-item.contemp-acc .accordion-header {
+            background: linear-gradient(135deg, #a8e6cf 0%, #81c784 100%);
+        }
+        .accordion-header {
+            padding: 1rem 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: #fff;
+            user-select: none;
+            transition: filter .15s ease;
+        }
+        .accordion-header:hover {
+            filter: brightness(1.05);
+        }
+        .accordion-header:active {
+            filter: brightness(0.95);
+        }
+        .accordion-header-left {
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+        }
+        .accordion-header-icon {
+            font-size: clamp(1.6rem, 4vw, 2.2rem);
+            line-height: 1;
+            filter: drop-shadow(0 1px 2px rgba(0,0,0,0.2));
+        }
+        .accordion-header-title {
+            font-size: clamp(1.05rem, 3vw, 1.3rem);
+            font-weight: 900;
+            letter-spacing: 0.3px;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.15);
+        }
+        .accordion-chevron {
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform .3s cubic-bezier(0.4, 0, 0.2, 1);
+            flex-shrink: 0;
+        }
+        .accordion-chevron svg {
+            width: 22px;
+            height: 22px;
+            stroke: #fff;
+            stroke-width: 3;
+            fill: none;
+        }
+        .accordion-item.open .accordion-chevron {
+            transform: rotate(180deg);
+        }
+        .accordion-body {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height .4s cubic-bezier(0.4, 0, 0.2, 1), padding .3s ease;
+            background: #fff;
+        }
+        .accordion-item.open .accordion-body {
+            max-height: 600px;
+        }
+        .accordion-body-inner {
+            padding: 0.8rem 1.2rem 1.2rem;
+        }
+
+        /* Hecho destacado — inicio del periodo */
+        .key-fact {
+            border-radius: 10px;
+            padding: 0.85rem 1rem;
+            margin-bottom: 0.9rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.65rem;
+            font-weight: 700;
+            font-size: clamp(0.92rem, 2.5vw, 1.08rem);
+            line-height: 1.55;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+        .key-fact-icon {
+            font-size: clamp(1.3rem, 3.5vw, 1.6rem);
+            line-height: 1;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+        .key-fact-text {
+            flex: 1;
+        }
+        .antigua-acc .key-fact {
+            background: linear-gradient(135deg, #f3f0ff 0%, #ede9fe 100%);
+            color: #5b21b6;
+            border-left: 4px solid #a78bfa;
+        }
+        .media-acc .key-fact {
+            background: linear-gradient(135deg, #e8f7fd 0%, #d4eef7 100%);
+            color: #0c4a6e;
+            border-left: 4px solid #7ec8e3;
+        }
+        .moderna-acc .key-fact {
+            background: linear-gradient(135deg, #fefce8 0%, #fef9c3 100%);
+            color: #854d0e;
+            border-left: 4px solid #ffd43b;
+        }
+        .contemp-acc .key-fact {
+            background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+            color: #166534;
+            border-left: 4px solid #81c784;
+        }
+
+        /* Lista de características */
+        .fact-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .fact-list li {
+            padding: 0.5rem 0 0.5rem 1.6rem;
+            position: relative;
+            font-size: clamp(0.88rem, 2.4vw, 1.02rem);
+            color: #444;
+            line-height: 1.55;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .fact-list li:last-child {
+            border-bottom: none;
+        }
+        .antigua-acc .fact-list li::before {
+            content: '•';
+            position: absolute;
+            left: 0.2rem;
+            color: #a78bfa;
+            font-weight: bold;
+            font-size: 1.3em;
+            top: 0.35rem;
+        }
+        .media-acc .fact-list li::before {
+            content: '•';
+            position: absolute;
+            left: 0.2rem;
+            color: #7ec8e3;
+            font-weight: bold;
+            font-size: 1.3em;
+            top: 0.35rem;
+        }
+        .moderna-acc .fact-list li::before {
+            content: '•';
+            position: absolute;
+            left: 0.2rem;
+            color: #ffd43b;
+            font-weight: bold;
+            font-size: 1.3em;
+            top: 0.35rem;
+        }
+        .contemp-acc .fact-list li::before {
+            content: '•';
+            position: absolute;
+            left: 0.2rem;
+            color: #81c784;
+            font-weight: bold;
+            font-size: 1.3em;
+            top: 0.35rem;
+        }
+        .fact-list li strong {
+            color: var(--blue-dark);
+        }
+        .highlight-date {
+            color: var(--orange);
+            font-weight: 800;
+        }
+
+        /* Juego 1: Definiciones */
+        .game1-wrapper { display: flex; flex-direction: column; align-items: center; gap: 1.2rem; width: 100%; max-width: 700px; margin: 0 auto; flex: 1; justify-content: flex-start; padding-top: 0.5rem; }
+        .game1-card {
+            background: #fff; border-radius: 18px; padding: 2.2rem 2rem; width: 100%;
+            text-align: center; font-size: clamp(1.25rem, 3.5vw, 1.6rem); color: var(--blue-dark);
+            font-weight: 600; line-height: 1.6; border: 2px solid #e0e0e0;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.1), 0 2px 6px rgba(0,0,0,0.06);
+            transition: border-color 0.2s, box-shadow 0.2s; position: relative;
+            min-height: 180px; display: flex; align-items: center; justify-content: center;
+        }
+        .game1-card::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 6px;
+            background: linear-gradient(90deg, var(--pastel-purple), var(--pastel-sky), var(--pastel-yellow), var(--pastel-green));
+            border-radius: 18px 18px 0 0;
+        }
+        .game1-card.flash-error { border-color: var(--red); animation: shake 0.3s ease-in-out; }
+        .game1-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; }
+        .game1-buttons .btn { flex: 1; min-width: 0; font-size: clamp(0.85rem, 2.2vw, 1rem); padding: 0.9rem 0.6rem; height: auto; min-height: 70px; border-radius: 14px; letter-spacing: 0.3px; flex-direction: column; gap: 0.3rem; }
+        .game1-buttons .btn-icon { font-size: clamp(1.6rem, 4vw, 2.2rem); line-height: 1; display: block; }
+        .game1-buttons .btn-label { font-size: clamp(0.8rem, 2vw, 0.95rem); display: block; }
+        .btn-antigua { background: var(--pastel-purple); color: #4c1d95; }
+        .btn-antigua:hover { filter: brightness(0.92); }
+        .btn-media { background: var(--pastel-sky); color: #0c4a6e; }
+        .btn-media:hover { filter: brightness(0.92); }
+        .btn-moderna { background: var(--pastel-yellow); color: #713f12; }
+        .btn-moderna:hover { filter: brightness(0.92); }
+        .btn-contemp { background: var(--pastel-green); color: #14532d; }
+        .btn-contemp:hover { filter: brightness(0.92); }
+
+        /* Juegos 2, 3, 4, 5: Grid de tarjetas */
+        .game-grid-common {
+            display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px;
+            width: 100%; flex: 1; overflow-y: auto; padding: 0.5rem; align-content: start;
+        }
+        @media (min-width: 600px) {
+            .game-grid-common { grid-template-columns: repeat(4, 1fr); gap: 12px; padding: 0.8rem; }
         }
         .game-grid-card {
             background-color: var(--card-base); color: white; border: 4px solid transparent;
-            border-radius: 10px; padding: 10px 12px; min-height: 70px;
+            border-radius: 10px; padding: 10px 12px; min-height: 90px;
             display: flex; align-items: center; justify-content: center;
-            font-weight: 700; font-size: clamp(0.78rem, 1.8vw, 0.95rem); text-align: center;
-            cursor: pointer; transition: all 0.2s ease; user-select: none; position: relative;
-            line-height: 1.3;
+            font-weight: 700; font-size: clamp(0.85rem, 2vw, 1rem); text-align: center;
+            cursor: pointer; transition: all 0.2s ease; user-select: none; position: relative; line-height: 1.3;
         }
         .game-grid-card:hover:not(.matched):not(.selected) { transform: scale(1.02); box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
         .game-grid-card.selected { background-color: var(--card-selected); border-color: transparent; color: white; animation: pulse 1s infinite; }
         .game-grid-card.matched { background-color: var(--green); border-color: transparent; color: white; transform: scale(1); cursor: default; opacity: 1; box-shadow: 0 3px 10px rgba(46, 204, 113, 0.35); }
         .game-grid-card.flash-error { animation: shake 0.3s ease-in-out; border-color: var(--red); background-color: var(--red); }
-
-        @media (min-width: 520px) {
-            .game-grid-common { gap: 12px; padding: 0.8rem; }
-            .game-grid-card { min-height: 80px; font-size: clamp(0.88rem, 2vw, 1.05rem); padding: 12px 16px; border-radius: 12px; border-width: 4px; }
-        }
-        @media (min-width: 800px) {
-            .game-grid-common { gap: 14px; padding: 1rem; }
-            .game-grid-card { min-height: 90px; font-size: clamp(0.95rem, 2.2vw, 1.15rem); padding: 14px 18px; border-radius: 14px; border-width: 5px; }
-        }
 
         @keyframes pulse {
             0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(241, 196, 15, 0.7); }
@@ -266,22 +370,14 @@
             100% { transform: translateX(0); }
         }
 
-        /* Juego 5: Identificar imágenes */
-        .game5-wrapper { display: flex; flex-direction: column; align-items: center; gap: 1rem; width: 100%; max-width: 600px; margin: 0 auto; flex: 1; justify-content: flex-start; padding-top: 0.5rem; }
-        .game5-image-container {
-            width: 100%; max-width: 600px; aspect-ratio: 4 / 3;
-            display: flex; justify-content: center; align-items: center;
-            overflow: hidden;
-        }
-        .game5-image-container img {
-            width: 100%; height: 100%; object-fit: contain;
-            border-radius: 10px;
-            filter: drop-shadow(0 4px 12px rgba(0,0,0,0.15));
-        }
-        .game5-buttons { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; width: 100%; }
-        .game5-buttons .btn { flex: 1; min-width: 0; font-size: clamp(0.9rem, 2.5vw, 1.1rem); padding: 0.9rem 0.6rem; height: auto; min-height: 70px; border-radius: 14px; letter-spacing: 0.3px; flex-direction: column; gap: 0.3rem; }
-        .game5-buttons .btn-icon { font-size: clamp(1.8rem, 4.5vw, 2.4rem); line-height: 1; display: block; }
-        .game5-buttons .btn-label { font-size: clamp(0.85rem, 2.2vw, 1rem); display: block; }
+        /* Juego 6: Imágenes */
+        .game6-wrapper { display: flex; flex-direction: column; align-items: center; gap: 1rem; width: 100%; max-width: 600px; margin: 0 auto; flex: 1; justify-content: flex-start; padding-top: 0.5rem; }
+        .game6-image-container { width: 100%; max-width: 600px; aspect-ratio: 4 / 3; display: flex; justify-content: center; align-items: center; overflow: hidden; }
+        .game6-image-container img { width: 100%; height: 100%; object-fit: contain; border-radius: 10px; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.15)); }
+        .game6-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; }
+        .game6-buttons .btn { flex: 1; min-width: 0; font-size: clamp(0.85rem, 2.2vw, 1rem); padding: 0.9rem 0.6rem; height: auto; min-height: 70px; border-radius: 14px; letter-spacing: 0.3px; flex-direction: column; gap: 0.3rem; }
+        .game6-buttons .btn-icon { font-size: clamp(1.6rem, 4vw, 2.2rem); line-height: 1; display: block; }
+        .game6-buttons .btn-label { font-size: clamp(0.8rem, 2vw, 0.95rem); display: block; }
 
         /* Pantalla Final */
         .results{ display:flex; flex-direction:column; align-items:center; gap:.6rem; text-align:center; flex:1; justify-content:center;}
@@ -299,14 +395,14 @@
         @media (max-width: 899px) { .school-logo { width: 140px; max-width: 160px; } }
         @media (max-width: 420px) { .school-logo { width: 110px; max-width: 40%; margin-top: 0.6rem; } }
 
-        /* --- ESTILOS DEL HALL OF FAME --- */
+        /* Hall of Fame */
         .hall-of-fame { background: var(--panel); border-radius: 12px; padding: 1rem; margin-top: 1.5rem; width: 100%; max-width: 600px; }
         .hall-of-fame-title { color: var(--blue-700); font-weight: 800; font-size: 1.2rem; text-align: center; margin-bottom: 0.8rem; }
         .hall-of-fame-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
         .hall-of-fame-table th { background: var(--blue-600); color: white; padding: 0.5rem; text-align: left; }
         .hall-of-fame-table td { padding: 0.4rem 0.5rem; border-bottom: 1px solid #ddd; }
         .hall-of-fame-table tr:last-child td { border-bottom: none; }
-        .hall-of-fame-table tr:nth-child(even) { background-color: rgba(255, 255,255, 0.5); }
+        .hall-of-fame-table tr:nth-child(even) { background-color: rgba(255,255,255,0.5); }
         .hall-of-fame-error, .hall-of-fame-loading { padding: 1rem; text-align: center; color: var(--blue-700); font-style: italic; }
         .hall-of-fame-error { color: var(--red); }
 
@@ -332,8 +428,8 @@
 
     <section class="screen active" id="startScreen">
         <header>
-            <h1 data-i18n="startTitle">Prehistory</h1>
-            <div class="subtitle" data-i18n="startSubtitle">Learn about the stages of prehistory.</div>
+            <h1 data-i18n="startTitle">History</h1>
+            <div class="subtitle" data-i18n="startSubtitle">Learn about the stages of History.</div>
         </header>
         <div class="start-content">
             <div class="advice-box">
@@ -352,46 +448,99 @@
     </section>
 
     <section class="screen" id="summaryScreen">
-        <header><h1 data-i18n="summaryTitle">Prehistory</h1></header>
-        <div class="theory-content">
-            <div class="theory-box">
-                <h2 data-i18n="summaryHeading">PREHISTORY</h2>
-                <table class="theory-summary-table">
-                    <thead>
-                        <tr>
-                            <th data-i18n="thPaleo">Palaeolithic</th>
-                            <th data-i18n="thNeo">Neolithic</th>
-                            <th data-i18n="thMetals">Metal Ages</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td data-i18n="tdPaleo1"></td>
-                            <td data-i18n="tdNeo1"></td>
-                            <td data-i18n="tdMetals1"></td>
-                        </tr>
-                        <tr>
-                            <td data-i18n="tdPaleo2"></td>
-                            <td data-i18n="tdNeo2"></td>
-                            <td data-i18n="tdMetals2"></td>
-                        </tr>
-                        <tr>
-                            <td data-i18n="tdPaleo3"></td>
-                            <td data-i18n="tdNeo3"></td>
-                            <td data-i18n="tdMetals3"></td>
-                        </tr>
-                        <tr>
-                            <td data-i18n="tdPaleo4"></td>
-                            <td data-i18n="tdNeo4"></td>
-                            <td data-i18n="tdMetals4"></td>
-                        </tr>
-                        <tr>
-                            <td data-i18n="tdPaleo5"></td>
-                            <td data-i18n="tdNeo5"></td>
-                            <td data-i18n="tdMetals5"></td>
-                        </tr>
-                    </tbody>
-                </table>
+        <header><h1 data-i18n="summaryTitle">History</h1></header>
+        <div class="summary-wrapper">
+            <!-- Edad Antigua -->
+            <div class="accordion-item antigua-acc" id="accAntigua">
+                <div class="accordion-header" onclick="toggleAccordion('accAntigua')">
+                    <div class="accordion-header-left">
+                        <span class="accordion-header-icon">📜</span>
+                        <span class="accordion-header-title" data-i18n="thAntigua">Ancient Age</span>
+                    </div>
+                    <div class="accordion-chevron">
+                        <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+                    </div>
+                </div>
+                <div class="accordion-body">
+                    <div class="accordion-body-inner">
+                        <div class="key-fact">
+                            <span class="key-fact-icon">🟣</span>
+                            <span class="key-fact-text" data-i18n="keyFactAntigua"></span>
+                        </div>
+                        <ul class="fact-list">
+                            <li data-i18n="factAntigua1"></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- Edad Media -->
+            <div class="accordion-item media-acc" id="accMedia">
+                <div class="accordion-header" onclick="toggleAccordion('accMedia')">
+                    <div class="accordion-header-left">
+                        <span class="accordion-header-icon">🛡️</span>
+                        <span class="accordion-header-title" data-i18n="thMedia">Middle Ages</span>
+                    </div>
+                    <div class="accordion-chevron">
+                        <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+                    </div>
+                </div>
+                <div class="accordion-body">
+                    <div class="accordion-body-inner">
+                        <div class="key-fact">
+                            <span class="key-fact-icon">🔵</span>
+                            <span class="key-fact-text" data-i18n="keyFactMedia"></span>
+                        </div>
+                        <ul class="fact-list">
+                            <li data-i18n="factMedia1"></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- Edad Moderna -->
+            <div class="accordion-item moderna-acc" id="accModerna">
+                <div class="accordion-header" onclick="toggleAccordion('accModerna')">
+                    <div class="accordion-header-left">
+                        <span class="accordion-header-icon">🌍</span>
+                        <span class="accordion-header-title" data-i18n="thModerna">Modern Age</span>
+                    </div>
+                    <div class="accordion-chevron">
+                        <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+                    </div>
+                </div>
+                <div class="accordion-body">
+                    <div class="accordion-body-inner">
+                        <div class="key-fact">
+                            <span class="key-fact-icon">🟡</span>
+                            <span class="key-fact-text" data-i18n="keyFactModerna"></span>
+                        </div>
+                        <ul class="fact-list">
+                            <li data-i18n="factModerna1"></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- Edad Contemporánea -->
+            <div class="accordion-item contemp-acc" id="accContemp">
+                <div class="accordion-header" onclick="toggleAccordion('accContemp')">
+                    <div class="accordion-header-left">
+                        <span class="accordion-header-icon">💻</span>
+                        <span class="accordion-header-title" data-i18n="thContemp">Contemporary Age</span>
+                    </div>
+                    <div class="accordion-chevron">
+                        <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+                    </div>
+                </div>
+                <div class="accordion-body">
+                    <div class="accordion-body-inner">
+                        <div class="key-fact">
+                            <span class="key-fact-icon">🟢</span>
+                            <span class="key-fact-text" data-i18n="keyFactContemp"></span>
+                        </div>
+                        <ul class="fact-list">
+                            <li data-i18n="factContemp1"></li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
         <div style="text-align: center; margin-top: 1rem;">
@@ -401,83 +550,97 @@
 
     <section class="screen" id="game1Screen">
         <header>
-            <h1 data-i18n="game1Title">Stages of Prehistory</h1>
+            <h1 data-i18n="game1Title">Stages of History</h1>
             <div class="subtitle" data-i18n="game1Subtitle">Identify which stage the following statements refer to.</div>
         </header>
         <div class="game-info">
             <div class="timer" id="timerGame1">00:00.0</div>
             <div class="progress-bar"><div class="progress-fill" id="progressFillGame1"></div></div>
-            <div class="level-indicator" data-i18n="level1">Level 1/5</div>
+            <div class="level-indicator" data-i18n="level1">Level 1/6</div>
         </div>
         <div class="game1-wrapper">
             <div class="game1-card" id="game1Card">
-                <span id="game1Text" data-i18n="game1CardText"></span>
+                <span id="game1Text"></span>
             </div>
             <div class="game1-buttons" id="game1Buttons">
-                <button class="btn btn-paleo" id="btnPaleo1"><span class="btn-icon">🦴</span><span class="btn-label" data-i18n="btnPaleo">Palaeolithic</span></button>
-                <button class="btn btn-neo" id="btnNeo1"><span class="btn-icon">🌿</span><span class="btn-label" data-i18n="btnNeo">Neolithic</span></button>
-                <button class="btn btn-metals" id="btnMetals1"><span class="btn-icon">⚔️</span><span class="btn-label" data-i18n="btnMetals">Metal Ages</span></button>
+                <button class="btn btn-antigua" id="btnAntigua1"><span class="btn-icon">📜</span><span class="btn-label" data-i18n="btnAntigua">Ancient Age</span></button>
+                <button class="btn btn-media" id="btnMedia1"><span class="btn-icon">🛡️</span><span class="btn-label" data-i18n="btnMedia">Middle Ages</span></button>
+                <button class="btn btn-moderna" id="btnModerna1"><span class="btn-icon">🌍</span><span class="btn-label" data-i18n="btnModerna">Modern Age</span></button>
+                <button class="btn btn-contemp" id="btnContemp1"><span class="btn-icon">💻</span><span class="btn-label" data-i18n="btnContemp">Contemporary Age</span></button>
             </div>
         </div>
     </section>
 
     <section class="screen" id="game2Screen">
         <header>
-            <h1 data-i18n="game2Title">Identify the characteristics of the Palaeolithic</h1>
+            <h1 data-i18n="game2Title">Identify the characteristics of the Ancient Age</h1>
         </header>
         <div class="game-info">
             <div class="timer" id="timerGame2">00:00.0</div>
             <div class="progress-bar"><div class="progress-fill" id="progressFillGame2"></div></div>
-            <div class="level-indicator" data-i18n="level2">Level 2/5</div>
+            <div class="level-indicator" data-i18n="level2">Level 2/6</div>
         </div>
         <div class="game-grid-common" id="game2Grid"></div>
     </section>
 
     <section class="screen" id="game3Screen">
         <header>
-            <h1 data-i18n="game3Title">Identify the characteristics of the Neolithic</h1>
+            <h1 data-i18n="game3Title">Identify the characteristics of the Middle Ages</h1>
         </header>
         <div class="game-info">
             <div class="timer" id="timerGame3">00:00.0</div>
             <div class="progress-bar"><div class="progress-fill" id="progressFillGame3"></div></div>
-            <div class="level-indicator" data-i18n="level3">Level 3/5</div>
+            <div class="level-indicator" data-i18n="level3">Level 3/6</div>
         </div>
         <div class="game-grid-common" id="game3Grid"></div>
     </section>
 
     <section class="screen" id="game4Screen">
         <header>
-            <h1 data-i18n="game4Title">Identify the characteristics of the Metal Ages</h1>
+            <h1 data-i18n="game4Title">Identify the characteristics of the Modern Age</h1>
         </header>
         <div class="game-info">
             <div class="timer" id="timerGame4">00:00.0</div>
             <div class="progress-bar"><div class="progress-fill" id="progressFillGame4"></div></div>
-            <div class="level-indicator" data-i18n="level4">Level 4/5</div>
+            <div class="level-indicator" data-i18n="level4">Level 4/6</div>
         </div>
         <div class="game-grid-common" id="game4Grid"></div>
     </section>
 
     <section class="screen" id="game5Screen">
         <header>
-            <h1 data-i18n="game5Title">What stage do these images represent?</h1>
+            <h1 data-i18n="game5Title">Identify the characteristics of the Contemporary Age</h1>
         </header>
         <div class="game-info">
             <div class="timer" id="timerGame5">00:00.0</div>
             <div class="progress-bar"><div class="progress-fill" id="progressFillGame5"></div></div>
-            <div class="level-indicator" data-i18n="level5">Level 5/5</div>
+            <div class="level-indicator" data-i18n="level5">Level 5/6</div>
         </div>
-        <div class="game5-wrapper">
-            <div class="game5-image-container" id="game5Display"></div>
-            <div class="game5-buttons" id="game5Buttons">
-                <button class="btn btn-paleo" id="btnPaleo5"><span class="btn-icon">🦴</span><span class="btn-label" data-i18n="btnPaleo">Palaeolithic</span></button>
-                <button class="btn btn-neo" id="btnNeo5"><span class="btn-icon">🌿</span><span class="btn-label" data-i18n="btnNeo">Neolithic</span></button>
-                <button class="btn btn-metals" id="btnMetals5"><span class="btn-icon">⚔️</span><span class="btn-label" data-i18n="btnMetals">Metal Ages</span></button>
+        <div class="game-grid-common" id="game5Grid"></div>
+    </section>
+
+    <section class="screen" id="game6Screen">
+        <header>
+            <h1 data-i18n="game6Title">What stage do these images represent?</h1>
+        </header>
+        <div class="game-info">
+            <div class="timer" id="timerGame6">00:00.0</div>
+            <div class="progress-bar"><div class="progress-fill" id="progressFillGame6"></div></div>
+            <div class="level-indicator" data-i18n="level6">Level 6/6</div>
+        </div>
+        <div class="game6-wrapper">
+            <div class="game6-image-container" id="game6Display"></div>
+            <div class="game6-buttons" id="game6Buttons">
+                <button class="btn btn-antigua" id="btnAntigua6"><span class="btn-icon">📜</span><span class="btn-label" data-i18n="btnAntigua">Ancient Age</span></button>
+                <button class="btn btn-media" id="btnMedia6"><span class="btn-icon">🛡️</span><span class="btn-label" data-i18n="btnMedia">Middle Ages</span></button>
+                <button class="btn btn-moderna" id="btnModerna6"><span class="btn-icon">🌍</span><span class="btn-label" data-i18n="btnModerna">Modern Age</span></button>
+                <button class="btn btn-contemp" id="btnContemp6"><span class="btn-icon">💻</span><span class="btn-label" data-i18n="btnContemp">Contemporary Age</span></button>
             </div>
         </div>
     </section>
 
     <section class="screen" id="finalScreen">
-        <header><h1 class="final-title" data-i18n="finalTitle">Stages of Prehistory</h1></header>
+        <header><h1 class="final-title" data-i18n="finalTitle">Stages of History</h1></header>
         <div class="results">
             <div id="trophyBox">🏆</div>
             <div class="score-title" data-i18n="scoreLabel">Score:</div>
@@ -505,7 +668,7 @@
 </div>
 
 <script>
-    const SHEET_NAME = "Prehistoria";
+    const SHEET_NAME = "Historia";
     const APP_SCRIPT_URL = "https://script.google.com/macros/s/AKfycby-VSj-Qgztv3YEItsxoa31GfIE82jgJ6ZRQ0OAiATAsd1qN5b-u4ApPCEF8yhYHRG4OA/exec";
     
     let soundEnabled = true;
@@ -516,9 +679,11 @@
     let elapsed = 0;
     let finalTimeVal = 0;
     let finalScoreVal = 0;
-    const MIN_ATTEMPTS = 30;
+    const MIN_ATTEMPTS = 28;
     let totalAttempts = 0;
     let currentLang = 'en';
+
+    let activeGame = null;
 
     const audioUrls = {
         correct: 'https://raw.githubusercontent.com/ManuelVS8/Efectos_audio/refs/heads/main/Correcto.mp3',
@@ -566,9 +731,7 @@
     }
 
     if (window.speechSynthesis) {
-        window.speechSynthesis.onvoiceschanged = function() {
-            ttsForced = true;
-        };
+        window.speechSynthesis.onvoiceschanged = function() { ttsForced = true; };
     }
 
     function getBestVoice(lang) {
@@ -594,49 +757,52 @@
         window.speechSynthesis.speak(u);
     }
 
+    /* ====== ACORDEÓN ====== */
+    function toggleAccordion(id) {
+        const item = document.getElementById(id);
+        item.classList.toggle('open');
+        reproducirSonidoTap();
+    }
+
     /* ====== LANGUAGE SYSTEM ====== */
     const i18n = {
         en: {
-            startTitle: 'Prehistory',
-            startSubtitle: 'Learn about the stages of prehistory.',
-            startAdvice: 'Prehistory is the period spanning from the appearance of <span class="highlight-keyword">human beings</span> (about 2,000,000 years ago) to the invention of <span class="highlight-keyword">writing</span> (3500 BC). Prehistory is divided into three stages: <span class="highlight-keyword">Palaeolithic</span>, <span class="highlight-keyword">Neolithic</span>, and <span class="highlight-keyword">Metal Ages</span>.<br><strong style="display:block; margin-top:0.5rem; text-align: center;">Good luck!</strong>',
+            startTitle: 'History',
+            startSubtitle: 'Learn about the stages of History.',
+            startAdvice: 'History begins with the invention of <span class="highlight-keyword">writing</span> (3,500 BC) and continues to the <span class="highlight-keyword">present</span>. It is divided into four stages: <span class="highlight-keyword">Ancient Age</span>, <span class="highlight-keyword">Middle Ages</span>, <span class="highlight-keyword">Modern Age</span>, and <span class="highlight-keyword">Contemporary Age</span>.<br><strong style="display:block; margin-top:0.5rem; text-align: center;">Good luck!</strong>',
             startBtn: 'Start',
             playBtn: 'Play',
-            summaryTitle: 'Prehistory',
-            summaryHeading: 'PREHISTORY',
-            thPaleo: 'Palaeolithic',
-            thNeo: 'Neolithic',
-            thMetals: 'Metal Ages',
-            tdPaleo1: '<span class="highlight-date">2 million years ago</span>',
-            tdPaleo2: '<strong>Human beings</strong> appear',
-            tdPaleo3: 'They lived from <strong>hunting, fishing, and gathering</strong>',
-            tdPaleo4: 'They lived in tribes in <strong>caves and huts</strong>',
-            tdPaleo5: 'They were <strong>nomads</strong>. They mastered fire and made tools from stones, wood, and bones.',
-            tdNeo1: '<span class="highlight-date">12,000 years ago</span>',
-            tdNeo2: '<strong>Agriculture and livestock farming</strong> appear',
-            tdNeo3: 'They lived in <strong>villages</strong>',
-            tdNeo4: 'They became <strong>sedentary</strong>',
-            tdNeo5: 'They invented the <strong>wheel</strong> and used pottery for vessels.',
-            tdMetals1: '<span class="highlight-date">6,000 years ago</span>',
-            tdMetals2: 'They learned to use <strong>metals: copper, bronze, and iron</strong>',
-            tdMetals3: 'They made <strong>metal coins</strong>',
-            tdMetals4: 'They built <strong>walled cities</strong>',
-            tdMetals5: '',
-            game1Title: 'Stages of Prehistory',
+            summaryTitle: 'History',
+            thAntigua: 'Ancient Age',
+            thMedia: 'Middle Ages',
+            thModerna: 'Modern Age',
+            thContemp: 'Contemporary Age',
+            keyFactAntigua: '<strong>The invention of writing</strong> — <span class="highlight-date">3,500 BC</span>',
+            factAntigua1: 'Great civilisations appeared: <strong>Egypt, Greece, and Rome</strong>',
+            keyFactMedia: '<strong>The fall of the Roman Empire</strong> — <span class="highlight-date">476 AD</span>',
+            factMedia1: 'It is the time of <strong>knights, kings, and castles</strong>',
+            keyFactModerna: '<strong>The discovery of America</strong> — <span class="highlight-date">1,492</span>',
+            factModerna1: 'An era of great <strong>travels, discoveries, and inventions</strong> (telescope)',
+            keyFactContemp: '<strong>The French Revolution</strong> — <span class="highlight-date">1,789</span>',
+            factContemp1: '<strong>Our era</strong>: cars, space travel, mobile phones, internet…',
+            game1Title: 'Stages of History',
             game1Subtitle: 'Identify which stage the following statements refer to.',
-            level1: 'Level 1/5',
-            btnPaleo: 'Palaeolithic',
-            btnNeo: 'Neolithic',
-            btnMetals: 'Metal Ages',
-            game2Title: 'Identify the characteristics of the Palaeolithic',
-            level2: 'Level 2/5',
-            game3Title: 'Identify the characteristics of the Neolithic',
-            level3: 'Level 3/5',
-            game4Title: 'Identify the characteristics of the Metal Ages',
-            level4: 'Level 4/5',
-            game5Title: 'What stage do these images represent?',
-            level5: 'Level 5/5',
-            finalTitle: 'Stages of Prehistory',
+            level1: 'Level 1/6',
+            level2: 'Level 2/6',
+            level3: 'Level 3/6',
+            level4: 'Level 4/6',
+            level5: 'Level 5/6',
+            level6: 'Level 6/6',
+            btnAntigua: 'Ancient Age',
+            btnMedia: 'Middle Ages',
+            btnModerna: 'Modern Age',
+            btnContemp: 'Contemporary Age',
+            game2Title: 'Identify the characteristics of the Ancient Age',
+            game3Title: 'Identify the characteristics of the Middle Ages',
+            game4Title: 'Identify the characteristics of the Modern Age',
+            game5Title: 'Identify the characteristics of the Contemporary Age',
+            game6Title: 'What stage do these images represent?',
+            finalTitle: 'Stages of History',
             scoreLabel: 'Score:',
             timeLabel: 'Time:',
             backBtn: 'Back to menu',
@@ -650,46 +816,42 @@
             msg0: 'What a disaster... Are you sure you studied?'
         },
         es: {
-            startTitle: 'La prehistoria',
-            startSubtitle: 'Conoce las etapas de la prehistoria.',
-            startAdvice: 'La prehistoria es el periodo que abarca desde la aparición del <span class="highlight-keyword">ser humano</span> (hace unos 2.000.000 millones de años) hasta la aparición de la <span class="highlight-keyword">escritura</span> (3500 a.C.) La prehistoria se divide en tres etapas: <span class="highlight-keyword">Paleolítico</span>, <span class="highlight-keyword">Neolítico</span> y <span class="highlight-keyword">Edad de los Metales</span>.<br><strong style="display:block; margin-top:0.5rem; text-align: center;">¡Ánimo!</strong>',
+            startTitle: 'La Historia',
+            startSubtitle: 'Conoce las etapas de la Historia.',
+            startAdvice: 'La Historia comienza con la invención de la <span class="highlight-keyword">escritura</span> (3.500 a.C.) y llega hasta el <span class="highlight-keyword">presente</span>. Se divide en cuatro etapas: <span class="highlight-keyword">Edad Antigua</span>, <span class="highlight-keyword">Edad Media</span>, <span class="highlight-keyword">Edad Moderna</span> y <span class="highlight-keyword">Edad Contemporánea</span>.<br><strong style="display:block; margin-top:0.5rem; text-align: center;">¡Ánimo!</strong>',
             startBtn: 'Comenzar',
             playBtn: 'Jugar',
-            summaryTitle: 'La prehistoria',
-            summaryHeading: 'PREHISTORIA',
-            thPaleo: 'PALEOLÍTICO',
-            thNeo: 'NEOLÍTICO',
-            thMetals: 'EDAD DE LOS METALES',
-            tdPaleo1: '<span class="highlight-date">2 millones de años</span>',
-            tdPaleo2: 'Aparece el <strong>ser humano</strong>',
-            tdPaleo3: 'Viven de la <strong>caza, pesca y recolección</strong>',
-            tdPaleo4: 'Vivían en tribus en <strong>cuevas y chozas</strong>',
-            tdPaleo5: 'Eran <strong>nómadas</strong>. Dominan el fuego y hacen herramientas con piedras, madera y huesos.',
-            tdNeo1: '<span class="highlight-date">Hace 12.000 años</span>',
-            tdNeo2: 'Aparece la <strong>agricultura y la ganadería</strong>',
-            tdNeo3: 'Viven en <strong>poblados</strong>',
-            tdNeo4: 'Se hacen <strong>sedentarios</strong>',
-            tdNeo5: 'Inventan la <strong>rueda</strong> y emplean cerámica para vasijas.',
-            tdMetals1: '<span class="highlight-date">Hace 6.000 años</span>',
-            tdMetals2: 'Aprenden a usar los <strong>metales: cobre, bronce y hierro</strong>',
-            tdMetals3: 'Fabrican <strong>monedas de metal</strong>',
-            tdMetals4: 'Construyen <strong>ciudades amuralladas</strong>',
-            tdMetals5: '',
-            game1Title: 'Etapas de la prehistoria',
+            summaryTitle: 'La Historia',
+            thAntigua: 'Edad Antigua',
+            thMedia: 'Edad Media',
+            thModerna: 'Edad Moderna',
+            thContemp: 'Edad Contemporánea',
+            keyFactAntigua: '<strong>Se inventa la escritura</strong> — <span class="highlight-date">3.500 a.C.</span>',
+            factAntigua1: 'Aparecen grandes civilizaciones: <strong>Egipto, Grecia y Roma</strong>',
+            keyFactMedia: '<strong>Cae el imperio romano</strong> — <span class="highlight-date">476 d.C.</span>',
+            factMedia1: 'Es el tiempo de <strong>caballeros, reyes y castillos</strong>',
+            keyFactModerna: '<strong>Descubrimiento de América</strong> — <span class="highlight-date">1.492</span>',
+            factModerna1: 'Época de grandes <strong>viajes, descubrimientos e inventos</strong> (telescopio)',
+            keyFactContemp: '<strong>La revolución francesa</strong> — <span class="highlight-date">1.789</span>',
+            factContemp1: '<strong>Nuestra época</strong>: coches, viajes espaciales, móviles, internet…',
+            game1Title: 'Etapas de la Historia',
             game1Subtitle: 'Identifica a qué etapa se refieren las siguientes afirmaciones.',
-            level1: 'Nivel 1/5',
-            btnPaleo: 'Paleolítico',
-            btnNeo: 'Neolítico',
-            btnMetals: 'Edad de los Metales',
-            game2Title: 'Señala las características del Paleolítico',
-            level2: 'Nivel 2/5',
-            game3Title: 'Señala las características del Neolítico',
-            level3: 'Nivel 3/5',
-            game4Title: 'Señala las características de la Edad de los Metales',
-            level4: 'Nivel 4/5',
-            game5Title: '¿Qué etapa representan estas imágenes?',
-            level5: 'Nivel 5/5',
-            finalTitle: 'Etapas de la Prehistoria',
+            level1: 'Nivel 1/6',
+            level2: 'Nivel 2/6',
+            level3: 'Nivel 3/6',
+            level4: 'Nivel 4/6',
+            level5: 'Nivel 5/6',
+            level6: 'Nivel 6/6',
+            btnAntigua: 'Edad Antigua',
+            btnMedia: 'Edad Media',
+            btnModerna: 'Edad Moderna',
+            btnContemp: 'Edad Contemporánea',
+            game2Title: 'Señala las características de la Edad Antigua',
+            game3Title: 'Señala las características de la Edad Media',
+            game4Title: 'Señala las características de la Edad Moderna',
+            game5Title: 'Señala las características de la Edad Contemporánea',
+            game6Title: '¿Qué etapa representan estas imágenes?',
+            finalTitle: 'Etapas de la Historia',
             scoreLabel: 'Puntuación:',
             timeLabel: 'Tiempo:',
             backBtn: 'Volver al menú',
@@ -707,15 +869,37 @@
     function applyLanguage(lang) {
         currentLang = lang;
         document.documentElement.lang = lang;
+
         document.querySelectorAll('[data-i18n]').forEach(el => {
             const key = el.getAttribute('data-i18n');
-            if (i18n[lang][key] !== undefined) {
-                el.innerHTML = i18n[lang][key];
+            const text = i18n[lang][key];
+            if (text !== undefined) {
+                el.innerHTML = text;
             }
         });
+
         document.getElementById('langEN').classList.toggle('active-lang', lang === 'en');
         document.getElementById('langES').classList.toggle('active-lang', lang === 'es');
         document.title = i18n[lang].startTitle;
+
+        if (activeGame === 'game1' && game1Items.length > 0 && game1CurrentIndex < game1Items.length) {
+            const origIndex = game1OriginalOrder[game1CurrentIndex];
+            const newText = gameDataI18n[lang].game1[origIndex] ? gameDataI18n[lang].game1[origIndex].text : game1Items[game1CurrentIndex].text;
+            document.getElementById('game1Text').innerHTML = newText;
+        }
+
+        if (activeGame === 'game2' || activeGame === 'game3' || activeGame === 'game4' || activeGame === 'game5') {
+            const gridId = activeGame === 'game2' ? 'game2Grid' : activeGame === 'game3' ? 'game3Grid' : activeGame === 'game4' ? 'game4Grid' : 'game5Grid';
+            const cards = document.querySelectorAll(`#${gridId} .game-grid-card`);
+            cards.forEach(card => {
+                if (!card.classList.contains('matched')) {
+                    const origIdx = parseInt(card.dataset.origIndex);
+                    if (!isNaN(origIdx)) {
+                        card.innerHTML = gameDataI18n[lang].gridCards[origIdx].text;
+                    }
+                }
+            });
+        }
     }
 
     document.getElementById('langEN').onclick = () => { reproducirSonidoTap(); applyLanguage('en'); };
@@ -725,76 +909,71 @@
     const gameDataI18n = {
         en: {
             game1: [
-                { stage: 'paleo', text: 'It began 2 million years ago' },
-                { stage: 'paleo', text: 'Human beings appear' },
-                { stage: 'paleo', text: 'They lived from hunting, fishing, and gathering' },
-                { stage: 'paleo', text: 'They lived in tribes in caves and huts' },
-                { stage: 'paleo', text: 'They were nomads' },
-                { stage: 'paleo', text: 'They mastered fire and made tools from stones, wood, and bones.' },
-                { stage: 'neo', text: 'It began 12,000 years ago' },
-                { stage: 'neo', text: 'They invented agriculture and livestock farming' },
-                { stage: 'neo', text: 'They lived in villages' },
-                { stage: 'neo', text: 'They became sedentary' },
-                { stage: 'neo', text: 'They invented the wheel and used pottery for vessels.' },
-                { stage: 'metals', text: 'It began 6,000 years ago' },
-                { stage: 'metals', text: 'They learned to use metals: copper, bronze, and iron.' },
-                { stage: 'metals', text: 'They made metal coins' },
-                { stage: 'metals', text: 'They built walled cities' }
+                { stage: 'antigua', text: 'This period begins in 3,500 BC' },
+                { stage: 'antigua', text: 'Writing was invented' },
+                { stage: 'antigua', text: 'Great civilisations such as Egypt, Greece, and Rome appeared' },
+                { stage: 'media', text: 'This period begins in the year 476' },
+                { stage: 'media', text: 'This period begins with the fall of the Roman Empire' },
+                { stage: 'media', text: 'It is the time of knights, kings, and castles' },
+                { stage: 'moderna', text: 'It began in the year 1,492' },
+                { stage: 'moderna', text: 'Discovery of America' },
+                { stage: 'moderna', text: 'It is an era of discovery, travels, and inventions' },
+                { stage: 'contemp', text: 'It begins in the year 1,789' },
+                { stage: 'contemp', text: 'The French Revolution' },
+                { stage: 'contemp', text: 'Our era: cars, space travel, mobile phones, internet…' }
             ],
             gridCards: [
-                { stage: 'paleo', text: 'It began 2 million years ago' },
-                { stage: 'paleo', text: 'Human beings appear' },
-                { stage: 'paleo', text: 'They lived from hunting, fishing, and gathering' },
-                { stage: 'paleo', text: 'They were nomads' },
-                { stage: 'neo', text: 'It began 12,000 years ago' },
-                { stage: 'neo', text: 'They invented agriculture and livestock farming' },
-                { stage: 'neo', text: 'They became sedentary' },
-                { stage: 'neo', text: 'They invented the wheel and used pottery for vessels.' },
-                { stage: 'metals', text: 'It began 6,000 years ago' },
-                { stage: 'metals', text: 'They learned to use metals: copper, bronze, and iron.' },
-                { stage: 'metals', text: 'They made metal coins' },
-                { stage: 'metals', text: 'They built walled cities' }
+                { stage: 'antigua', text: 'This period begins in 3,500 BC' },
+                { stage: 'antigua', text: 'Writing was invented' },
+                { stage: 'antigua', text: 'Great civilisations such as Egypt, Greece, and Rome appeared' },
+                { stage: 'media', text: 'This period begins in the year 476' },
+                { stage: 'media', text: 'This period begins with the fall of the Roman Empire' },
+                { stage: 'media', text: 'It is the time of knights, kings, and castles' },
+                { stage: 'moderna', text: 'It began in the year 1,492' },
+                { stage: 'moderna', text: 'Discovery of America' },
+                { stage: 'moderna', text: 'It is an era of discovery, travels, and inventions' },
+                { stage: 'contemp', text: 'It begins in the year 1,789' },
+                { stage: 'contemp', text: 'The French Revolution' },
+                { stage: 'contemp', text: 'Our era: cars, space travel, mobile phones, internet…' }
             ]
         },
         es: {
             game1: [
-                { stage: 'paleo', text: 'Comenzó hace 2 millones de años' },
-                { stage: 'paleo', text: 'Aparece el ser humano' },
-                { stage: 'paleo', text: 'Viven de la caza, pesca y recolección' },
-                { stage: 'paleo', text: 'Vivían en tribus en cuevas y chozas' },
-                { stage: 'paleo', text: 'Eran nómadas' },
-                { stage: 'paleo', text: 'Dominan el fuego y hacen herramientas con piedras, madera y huesos.' },
-                { stage: 'neo', text: 'Comenzó hace 12.000 años' },
-                { stage: 'neo', text: 'Inventan la agricultura y la ganadería' },
-                { stage: 'neo', text: 'Viven en poblados' },
-                { stage: 'neo', text: 'Se hacen sedentarios' },
-                { stage: 'neo', text: 'Inventan la rueda y emplean cerámica para vasijas.' },
-                { stage: 'metals', text: 'Comenzó hace 6.000 años' },
-                { stage: 'metals', text: 'Aprenden a usar los metales: cobre, bronce y hierro.' },
-                { stage: 'metals', text: 'Fabrican monedas de metal' },
-                { stage: 'metals', text: 'Construyen ciudades amuralladas' }
+                { stage: 'antigua', text: 'Esta época comienza en el 3.500 a.C.' },
+                { stage: 'antigua', text: 'Se inventa la escritura' },
+                { stage: 'antigua', text: 'Aparecen grandes civilizaciones como Egipto, Grecia y Roma' },
+                { stage: 'media', text: 'Esta época comienza en el año 476' },
+                { stage: 'media', text: 'Esta época comienza con la caída del imperio romano' },
+                { stage: 'media', text: 'Es el tiempo de caballeros, reyes y castillos' },
+                { stage: 'moderna', text: 'Comenzó en el año 1.492' },
+                { stage: 'moderna', text: 'Descubrimiento de América' },
+                { stage: 'moderna', text: 'Es una época de descubrimiento, viajes e inventos' },
+                { stage: 'contemp', text: 'Comienza en el año 1.789' },
+                { stage: 'contemp', text: 'La revolución francesa' },
+                { stage: 'contemp', text: 'Nuestra época: coches, viajes espaciales, móviles, internet…' }
             ],
             gridCards: [
-                { stage: 'paleo', text: 'Comenzó hace 2 millones de años' },
-                { stage: 'paleo', text: 'Aparece el ser humano' },
-                { stage: 'paleo', text: 'Viven de la caza, pesca y recolección' },
-                { stage: 'paleo', text: 'Eran nómadas' },
-                { stage: 'neo', text: 'Comenzó hace 12.000 años' },
-                { stage: 'neo', text: 'Inventan la agricultura y la ganadería' },
-                { stage: 'neo', text: 'Se hacen sedentarios' },
-                { stage: 'neo', text: 'Inventan la rueda y emplean cerámica para vasijas.' },
-                { stage: 'metals', text: 'Comenzó hace 6.000 años' },
-                { stage: 'metals', text: 'Aprenden a usar los metales: cobre, bronce y hierro.' },
-                { stage: 'metals', text: 'Fabrican monedas de metal' },
-                { stage: 'metals', text: 'Construyen ciudades amuralladas' }
+                { stage: 'antigua', text: 'Esta época comienza en el 3.500 a.C.' },
+                { stage: 'antigua', text: 'Se inventa la escritura' },
+                { stage: 'antigua', text: 'Aparecen grandes civilizaciones como Egipto, Grecia y Roma' },
+                { stage: 'media', text: 'Esta época comienza en el año 476' },
+                { stage: 'media', text: 'Esta época comienza con la caída del imperio romano' },
+                { stage: 'media', text: 'Es el tiempo de caballeros, reyes y castillos' },
+                { stage: 'moderna', text: 'Comenzó en el año 1.492' },
+                { stage: 'moderna', text: 'Descubrimiento de América' },
+                { stage: 'moderna', text: 'Es una época de descubrimiento, viajes e inventos' },
+                { stage: 'contemp', text: 'Comienza en el año 1.789' },
+                { stage: 'contemp', text: 'La revolución francesa' },
+                { stage: 'contemp', text: 'Nuestra época: coches, viajes espaciales, móviles, internet…' }
             ]
         }
     };
 
-    const game5ImageData = [
-        { stage: 'paleo', img: 'https://raw.githubusercontent.com/ManuelVS8/Audios-juegos-SCIENCE/refs/heads/main/C_MEDIO3/Historia/Edades/Paleolitico.png' },
-        { stage: 'neo', img: 'https://raw.githubusercontent.com/ManuelVS8/Audios-juegos-SCIENCE/refs/heads/main/C_MEDIO3/Historia/Edades/Neolitico.png' },
-        { stage: 'metals', img: 'https://raw.githubusercontent.com/ManuelVS8/Audios-juegos-SCIENCE/refs/heads/main/C_MEDIO3/Historia/Edades/Metales.png' }
+    const game6ImageData = [
+        { stage: 'antigua', img: 'https://raw.githubusercontent.com/ManuelVS8/Audios-juegos-SCIENCE/refs/heads/main/C_MEDIO3/Historia/Edades/Antigua.png' },
+        { stage: 'media', img: 'https://raw.githubusercontent.com/ManuelVS8/Audios-juegos-SCIENCE/refs/heads/main/C_MEDIO3/Historia/Edades/Media.png' },
+        { stage: 'moderna', img: 'https://raw.githubusercontent.com/ManuelVS8/Audios-juegos-SCIENCE/refs/heads/main/C_MEDIO3/Historia/Edades/Moderna.png' },
+        { stage: 'contemp', img: 'https://raw.githubusercontent.com/ManuelVS8/Audios-juegos-SCIENCE/refs/heads/main/C_MEDIO3/Historia/Edades/Contemporanea.png' }
     ];
 
     const svgSoundOn = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>';
@@ -813,16 +992,11 @@
         }
     }
 
-    /* ====== PRECARGA DE IMÁGENES ====== */
     function preloadImages(urls) {
         const uniqueUrls = [...new Set(urls)];
-        uniqueUrls.forEach(url => {
-            const img = new Image();
-            img.src = url;
-        });
+        uniqueUrls.forEach(url => { const img = new Image(); img.src = url; });
     }
 
-    /* ====== UTILIDADES ====== */
     function showScreen(id) {
         document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
         document.getElementById(id).classList.add('active');
@@ -836,11 +1010,10 @@
             const delta = (Date.now() - startTime) / 1000;
             elapsed = delta;
             const timeStr = formatTime(delta);
-            if(document.getElementById('timerGame1')) document.getElementById('timerGame1').textContent = timeStr;
-            if(document.getElementById('timerGame2')) document.getElementById('timerGame2').textContent = timeStr;
-            if(document.getElementById('timerGame3')) document.getElementById('timerGame3').textContent = timeStr;
-            if(document.getElementById('timerGame4')) document.getElementById('timerGame4').textContent = timeStr;
-            if(document.getElementById('timerGame5')) document.getElementById('timerGame5').textContent = timeStr;
+            ['timerGame1','timerGame2','timerGame3','timerGame4','timerGame5','timerGame6'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.textContent = timeStr;
+            });
         }, 100);
     }
 
@@ -880,40 +1053,42 @@
     
     document.getElementById('playBtn').onclick = () => { 
         reproducirSonidoTap(); totalAttempts = 0; startGlobalTimer();
-        preloadImages(game5ImageData.map(d => d.img));
+        preloadImages(game6ImageData.map(d => d.img));
         initGame1();
     };
 
     /* ====== JUEGO 1: IDENTIFICAR DEFINICIONES ====== */
     let game1Items = [];
+    let game1OriginalOrder = [];
     let game1CurrentIndex = 0;
-    const totalItems1 = 15;
+    const totalItems1 = 12;
     let game1Locked = false;
 
-    document.getElementById('btnPaleo1').onclick = () => checkAnswerGame1('paleo');
-    document.getElementById('btnNeo1').onclick = () => checkAnswerGame1('neo');
-    document.getElementById('btnMetals1').onclick = () => checkAnswerGame1('metals');
+    document.getElementById('btnAntigua1').onclick = () => checkAnswerGame1('antigua');
+    document.getElementById('btnMedia1').onclick = () => checkAnswerGame1('media');
+    document.getElementById('btnModerna1').onclick = () => checkAnswerGame1('moderna');
+    document.getElementById('btnContemp1').onclick = () => checkAnswerGame1('contemp');
 
     function initGame1() {
+        activeGame = 'game1';
         showScreen('game1Screen');
         game1CurrentIndex = 0;
         game1Locked = false;
         updateProgress('progressFillGame1', 0);
-        game1Items = shuffle([...gameDataI18n[currentLang].game1]);
-        // Inyectar traducciones dinámicas de las tarjetas al sistema i18n
-        game1Items.forEach((item, index) => {
-            const key = `g1_card_${index}`;
-            i18n.en[key] = gameDataI18n.en.game1.find(d => d.stage === item.stage && d.text === item.text)?.text || item.text;
-            i18n.es[key] = gameDataI18n.es.game1.find(d => d.stage === item.stage && d.text === item.text)?.text || item.text;
-        });
+
+        const indices = Array.from({ length: gameDataI18n[currentLang].game1.length }, (_, i) => i);
+        shuffle(indices);
+        game1OriginalOrder = indices;
+        game1Items = indices.map(i => gameDataI18n[currentLang].game1[i]);
+
         loadQuestionGame1();
     }
 
     function loadQuestionGame1() {
         game1Locked = false;
-        const key = `g1_card_${game1CurrentIndex}`;
-        document.getElementById('game1Text').setAttribute('data-i18n', key);
-        document.getElementById('game1Text').innerHTML = i18n[currentLang][key];
+        const origIdx = game1OriginalOrder[game1CurrentIndex];
+        const text = gameDataI18n[currentLang].game1[origIdx].text;
+        document.getElementById('game1Text').innerHTML = text;
         document.getElementById('game1Card').classList.remove('flash-error');
         document.getElementById('game1Buttons').style.display = 'grid';
     }
@@ -944,83 +1119,71 @@
         }
     }
 
-    /* ====== JUEGO 2: IDENTIFICAR PALEOLÍTICO ====== */
+    /* ====== JUEGO 2 ====== */
     let game2CorrectCount = 0;
-    const totalCorrect2 = 4;
+    const totalCorrect2 = 3;
     let game2Locked = false;
 
-    function initGame2() {
-        showScreen('game2Screen');
-        game2CorrectCount = 0;
-        game2Locked = false;
-        updateProgress('progressFillGame2', 0);
-        const grid = document.getElementById('game2Grid');
+    function buildGridCards(gridId, targetStage, gameNum) {
+        const grid = document.getElementById(gridId);
         grid.innerHTML = '';
-        const cards = shuffle([...gameDataI18n[currentLang].gridCards]);
-        cards.forEach((c, index) => {
-            const key = `g2_card_${index}`;
-            i18n.en[key] = gameDataI18n.en.gridCards.find(d => d.stage === c.stage && d.text === c.text)?.text || c.text;
-            i18n.es[key] = gameDataI18n.es.gridCards.find(d => d.stage === c.stage && d.text === c.text)?.text || c.text;
+        const indices = Array.from({ length: gameDataI18n[currentLang].gridCards.length }, (_, i) => i);
+        shuffle(indices);
 
+        indices.forEach(origIdx => {
+            const c = gameDataI18n[currentLang].gridCards[origIdx];
             const card = document.createElement('div');
             card.className = 'game-grid-card';
             card.dataset.stage = c.stage;
-            card.dataset.index = index;
-            card.setAttribute('data-i18n', key);
-            card.innerHTML = i18n[currentLang][key];
-            card.onclick = () => handleGridCardClick(card, 'paleo', 2);
+            card.dataset.origIndex = origIdx;
+            card.innerHTML = c.text;
+            card.onclick = () => handleGridCardClick(card, targetStage, gameNum);
             grid.appendChild(card);
         });
     }
 
+    function initGame2() {
+        activeGame = 'game2';
+        showScreen('game2Screen');
+        game2CorrectCount = 0;
+        game2Locked = false;
+        updateProgress('progressFillGame2', 0);
+        buildGridCards('game2Grid', 'antigua', 2);
+    }
+
     function handleGridCardClick(card, targetStage, gameNum) {
-        if (game2Locked || game3Locked || game4Locked) return;
+        if (gameNum === 2 && game2Locked) return;
+        if (gameNum === 3 && game3Locked) return;
+        if (gameNum === 4 && game4Locked) return;
+        if (gameNum === 5 && game5Locked) return;
         const cardStage = card.dataset.stage;
 
         if (cardStage === targetStage) {
             totalAttempts++;
             if (gameNum === 2) {
                 game2CorrectCount++;
-                if (game2CorrectCount === totalCorrect2) {
-                    reproducirSonidoCompletado();
-                } else {
-                    reproducirSonidoCorrecto();
-                }
-                card.classList.remove('selected');
-                card.classList.add('matched');
-                card.onclick = null;
+                if (game2CorrectCount === totalCorrect2) { reproducirSonidoCompletado(); } else { reproducirSonidoCorrecto(); }
+                card.classList.remove('selected'); card.classList.add('matched'); card.onclick = null;
                 updateProgress('progressFillGame2', (game2CorrectCount / totalCorrect2) * 100);
-                if (game2CorrectCount === totalCorrect2) {
-                    setTimeout(initGame3, 800);
-                }
+                if (game2CorrectCount === totalCorrect2) { setTimeout(initGame3, 800); }
             } else if (gameNum === 3) {
                 game3CorrectCount++;
-                if (game3CorrectCount === totalCorrect3) {
-                    reproducirSonidoCompletado();
-                } else {
-                    reproducirSonidoCorrecto();
-                }
-                card.classList.remove('selected');
-                card.classList.add('matched');
-                card.onclick = null;
+                if (game3CorrectCount === totalCorrect3) { reproducirSonidoCompletado(); } else { reproducirSonidoCorrecto(); }
+                card.classList.remove('selected'); card.classList.add('matched'); card.onclick = null;
                 updateProgress('progressFillGame3', (game3CorrectCount / totalCorrect3) * 100);
-                if (game3CorrectCount === totalCorrect3) {
-                    setTimeout(initGame4, 800);
-                }
+                if (game3CorrectCount === totalCorrect3) { setTimeout(initGame4, 800); }
             } else if (gameNum === 4) {
                 game4CorrectCount++;
-                if (game4CorrectCount === totalCorrect4) {
-                    reproducirSonidoCompletado();
-                } else {
-                    reproducirSonidoCorrecto();
-                }
-                card.classList.remove('selected');
-                card.classList.add('matched');
-                card.onclick = null;
+                if (game4CorrectCount === totalCorrect4) { reproducirSonidoCompletado(); } else { reproducirSonidoCorrecto(); }
+                card.classList.remove('selected'); card.classList.add('matched'); card.onclick = null;
                 updateProgress('progressFillGame4', (game4CorrectCount / totalCorrect4) * 100);
-                if (game4CorrectCount === totalCorrect4) {
-                    setTimeout(initGame5, 800);
-                }
+                if (game4CorrectCount === totalCorrect4) { setTimeout(initGame5, 800); }
+            } else if (gameNum === 5) {
+                game5CorrectCount++;
+                if (game5CorrectCount === totalCorrect5) { reproducirSonidoCompletado(); } else { reproducirSonidoCorrecto(); }
+                card.classList.remove('selected'); card.classList.add('matched'); card.onclick = null;
+                updateProgress('progressFillGame5', (game5CorrectCount / totalCorrect5) * 100);
+                if (game5CorrectCount === totalCorrect5) { setTimeout(initGame6, 800); }
             }
         } else {
             totalAttempts++;
@@ -1028,120 +1191,104 @@
             card.classList.add('selected');
             reproducirSonidoError();
             card.classList.add('flash-error');
-            setTimeout(() => {
-                card.classList.remove('selected', 'flash-error');
-            }, 200);
+            setTimeout(() => { card.classList.remove('selected', 'flash-error'); }, 200);
         }
     }
 
-    /* ====== JUEGO 3: IDENTIFICAR NEOLÍTICO ====== */
+    /* ====== JUEGO 3 ====== */
     let game3CorrectCount = 0;
-    const totalCorrect3 = 4;
+    const totalCorrect3 = 3;
     let game3Locked = false;
 
     function initGame3() {
+        activeGame = 'game3';
         showScreen('game3Screen');
         game3CorrectCount = 0;
         game3Locked = false;
         updateProgress('progressFillGame3', 0);
-        const grid = document.getElementById('game3Grid');
-        grid.innerHTML = '';
-        const cards = shuffle([...gameDataI18n[currentLang].gridCards]);
-        cards.forEach((c, index) => {
-            const key = `g3_card_${index}`;
-            i18n.en[key] = gameDataI18n.en.gridCards.find(d => d.stage === c.stage && d.text === c.text)?.text || c.text;
-            i18n.es[key] = gameDataI18n.es.gridCards.find(d => d.stage === c.stage && d.text === c.text)?.text || c.text;
-
-            const card = document.createElement('div');
-            card.className = 'game-grid-card';
-            card.dataset.stage = c.stage;
-            card.dataset.index = index;
-            card.setAttribute('data-i18n', key);
-            card.innerHTML = i18n[currentLang][key];
-            card.onclick = () => handleGridCardClick(card, 'neo', 3);
-            grid.appendChild(card);
-        });
+        buildGridCards('game3Grid', 'media', 3);
     }
 
-    /* ====== JUEGO 4: IDENTIFICAR EDAD DE LOS METALES ====== */
+    /* ====== JUEGO 4 ====== */
     let game4CorrectCount = 0;
-    const totalCorrect4 = 4;
+    const totalCorrect4 = 3;
     let game4Locked = false;
 
     function initGame4() {
+        activeGame = 'game4';
         showScreen('game4Screen');
         game4CorrectCount = 0;
         game4Locked = false;
         updateProgress('progressFillGame4', 0);
-        const grid = document.getElementById('game4Grid');
-        grid.innerHTML = '';
-        const cards = shuffle([...gameDataI18n[currentLang].gridCards]);
-        cards.forEach((c, index) => {
-            const key = `g4_card_${index}`;
-            i18n.en[key] = gameDataI18n.en.gridCards.find(d => d.stage === c.stage && d.text === c.text)?.text || c.text;
-            i18n.es[key] = gameDataI18n.es.gridCards.find(d => d.stage === c.stage && d.text === c.text)?.text || c.text;
-
-            const card = document.createElement('div');
-            card.className = 'game-grid-card';
-            card.dataset.stage = c.stage;
-            card.dataset.index = index;
-            card.setAttribute('data-i18n', key);
-            card.innerHTML = i18n[currentLang][key];
-            card.onclick = () => handleGridCardClick(card, 'metals', 4);
-            grid.appendChild(card);
-        });
+        buildGridCards('game4Grid', 'moderna', 4);
     }
 
-    /* ====== JUEGO 5: IDENTIFICAR IMÁGENES ====== */
-    let game5Items = [];
-    let game5CurrentIndex = 0;
-    const totalItems5 = 3;
+    /* ====== JUEGO 5 ====== */
+    let game5CorrectCount = 0;
+    const totalCorrect5 = 3;
     let game5Locked = false;
 
-    document.getElementById('btnPaleo5').onclick = () => checkAnswerGame5('paleo');
-    document.getElementById('btnNeo5').onclick = () => checkAnswerGame5('neo');
-    document.getElementById('btnMetals5').onclick = () => checkAnswerGame5('metals');
-
     function initGame5() {
+        activeGame = 'game5';
         showScreen('game5Screen');
-        game5CurrentIndex = 0;
+        game5CorrectCount = 0;
         game5Locked = false;
         updateProgress('progressFillGame5', 0);
-        game5Items = shuffle([...game5ImageData]);
-        loadQuestionGame5();
+        buildGridCards('game5Grid', 'contemp', 5);
     }
 
-    function loadQuestionGame5() {
-        game5Locked = false;
-        const item = game5Items[game5CurrentIndex];
-        document.getElementById('game5Display').innerHTML = `<img src="${item.img}" alt="Prehistory image">`;
-        document.getElementById('game5Buttons').style.display = 'grid';
+    /* ====== JUEGO 6 ====== */
+    let game6Items = [];
+    let game6CurrentIndex = 0;
+    const totalItems6 = 4;
+    let game6Locked = false;
+
+    document.getElementById('btnAntigua6').onclick = () => checkAnswerGame6('antigua');
+    document.getElementById('btnMedia6').onclick = () => checkAnswerGame6('media');
+    document.getElementById('btnModerna6').onclick = () => checkAnswerGame6('moderna');
+    document.getElementById('btnContemp6').onclick = () => checkAnswerGame6('contemp');
+
+    function initGame6() {
+        activeGame = 'game6';
+        showScreen('game6Screen');
+        game6CurrentIndex = 0;
+        game6Locked = false;
+        updateProgress('progressFillGame6', 0);
+        game6Items = shuffle([...game6ImageData]);
+        loadQuestionGame6();
     }
 
-    function checkAnswerGame5(answer) {
-        if (game5Locked) return;
+    function loadQuestionGame6() {
+        game6Locked = false;
+        const item = game6Items[game6CurrentIndex];
+        document.getElementById('game6Display').innerHTML = `<img src="${item.img}" alt="History image">`;
+        document.getElementById('game6Buttons').style.display = 'grid';
+    }
+
+    function checkAnswerGame6(answer) {
+        if (game6Locked) return;
         window.speechSynthesis.cancel();
         totalAttempts++;
-        const correctStage = game5Items[game5CurrentIndex].stage;
+        const correctStage = game6Items[game6CurrentIndex].stage;
         if (answer === correctStage) {
             reproducirSonidoCorrecto();
-            game5Locked = true;
-            game5CurrentIndex++;
-            updateProgress('progressFillGame5', (game5CurrentIndex / totalItems5) * 100);
-            if (game5CurrentIndex < totalItems5) {
-                setTimeout(loadQuestionGame5, 200);
+            game6Locked = true;
+            game6CurrentIndex++;
+            updateProgress('progressFillGame6', (game6CurrentIndex / totalItems6) * 100);
+            if (game6CurrentIndex < totalItems6) {
+                setTimeout(loadQuestionGame6, 200);
             } else {
                 setTimeout(finishGame, 200);
             }
         } else {
             reproducirSonidoError();
-            game5Locked = true;
-            const btnId = answer === 'paleo' ? 'btnPaleo5' : answer === 'neo' ? 'btnNeo5' : 'btnMetals5';
+            game6Locked = true;
+            const btnId = answer === 'antigua' ? 'btnAntigua6' : answer === 'media' ? 'btnMedia6' : answer === 'moderna' ? 'btnModerna6' : 'btnContemp6';
             const wrongBtn = document.getElementById(btnId);
             wrongBtn.style.animation = 'shake 0.3s ease-in-out';
             setTimeout(() => {
                 wrongBtn.style.animation = '';
-                game5Locked = false;
+                game6Locked = false;
             }, 700);
         }
     }
@@ -1149,6 +1296,7 @@
     /* ====== FINALIZAR ====== */
     function finishGame() {
         window.speechSynthesis.cancel();
+        activeGame = null;
         stopTimer();
         finalTimeVal = elapsed;
         finalScoreVal = calcularPuntuacionFinal();
