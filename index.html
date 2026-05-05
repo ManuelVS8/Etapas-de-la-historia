@@ -1,0 +1,1279 @@
+<!DOCTYPE html>
+<html lang="en" translate="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <meta name="google" content="notranslate">
+    <title>Prehistory</title>
+    <link rel="icon" type="image/x-icon" href="https://raw.githubusercontent.com/ManuelVS8/Audios-juegos-SCIENCE/refs/heads/main/icono.ico">
+    <style>
+        /* ====== Reset & base ====== */
+        * { box-sizing: border-box; margin:0; padding:0; }
+        :root{
+            --blue:#001DFF;
+            --blue-dark:#04032B;
+            --blue-700:#1a3a5f;
+            --blue-600:#254fba;
+            --orange:#f59e42;
+            --orange-700:#e67e22;
+            --bg-grad-1:#1a3a5f;
+            --bg-grad-2:#0d2340;
+            --white:#ffffff;
+            --green:#2ecc71;
+            --red:#e74c3c;
+            --panel:#E8EAFF;
+            --card-base:#3498db;
+            --card-selected:#f1c40f;
+            --pastel-red:#f4a6a0;
+            --pastel-green:#a8e6cf;
+            --pastel-yellow:#ffe066;
+        }
+        body{
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--bg-grad-1) 0%, var(--bg-grad-2) 100%);
+            min-height:100vh; 
+            display:flex; 
+            justify-content:center; 
+            align-items: flex-start; 
+            padding: 20px 12px;
+            color:#333; 
+        }
+        .game-container{
+            background:var(--white); border-radius:16px; box-shadow:0 12px 24px rgba(0,0,0,.12);
+            padding:1.2rem; max-width:980px; width:100%; min-height:640px; position:relative; overflow:hidden;
+            display:flex; flex-direction:column;
+            margin-bottom: 2rem; 
+        }
+        header{ text-align:center; margin-bottom:.8rem; margin-top:1.5rem; }
+        h1{ color:var(--blue-dark); font-size:clamp(2rem,5.2vw,3.1rem); font-weight:900; letter-spacing:.5px; }
+        .subtitle{ color:var(--blue-700); font-size:clamp(1rem,3.5vw,1.25rem); margin-top:.25rem; }
+        .highlight-keyword{ color:var(--orange); font-weight:800; }
+
+        .btn{ color:#fff; border:none; padding:.75rem 1.2rem; border-radius:10px; cursor:pointer; font-weight:800;
+            transition:transform .08s ease, box-shadow .2s ease, background-color .25s ease; min-width:140px; height:48px;
+            display:inline-flex; align-items:center; justify-content:center; font-size: 1rem; }
+        .btn:hover{ transform:translateY(-2px); box-shadow:0 6px 14px rgba(0,0,0,.12); }
+        .btn:active{ transform:translateY(0); }
+        .btn-primary{ background:var(--orange); }
+        .btn-primary:hover{ background:var(--orange-700); }
+        .btn-blue{ background:var(--blue-600); }
+        .btn-blue:hover{ filter:brightness(.9); }
+        .btn-ghost{ background:#e6f2ff; color:var(--blue-700); }
+        .btn-green{ background:var(--green); }
+        .btn-green:hover{ filter:brightness(.9); }
+        .btn-red{ background:var(--red); }
+        .btn-red:hover{ filter:brightness(.9); }
+
+        .screen{ display:none; animation:fadeIn .35s ease; flex-direction:column; flex:1; }
+        .screen.active{ display:flex; }
+        @keyframes fadeIn{ from{opacity:0; transform:translateY(12px);} to{opacity:1; transform:translateY(0);} }
+
+        .game-info{ display:flex; gap:.6rem; align-items:center; justify-content:space-between; margin:.4rem 0 1rem; flex-wrap:wrap; }
+        .timer{ font-weight:900; color:var(--blue-700); font-size:clamp(.95rem,2.3vw,1.15rem); }
+        .progress-bar{ flex:1; height:10px; background:#e6f2ff; border-radius:999px; overflow:hidden; }
+        .progress-fill{ height:100%; width:0%; background:linear-gradient(90deg, var(--orange) 0%, var(--orange-700) 100%); transition:width .3s ease; }
+        .level-indicator{ font-weight:700; color: var(--blue-700); font-size: 0.9rem; background: #e6f2ff; padding: 4px 10px; border-radius: 20px; }
+
+        /* ====== Top Controls ====== */
+        .top-controls{
+            position: absolute; top: .8rem; right: 1rem; display: flex; align-items: center; gap: 8px; z-index: 20;
+        }
+        .lang-pill{
+            display: flex; align-items: center; background: #fff; border-radius: 999px; padding: 3px; gap: 3px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.12); border: 1px solid #e0e0e0;
+        }
+        .lang-pill button{
+            width: 34px; height: 34px; border-radius: 50%; border: none; font-size: 1.15rem; cursor: pointer;
+            display: flex; align-items: center; justify-content: center; background: transparent;
+            transition: background .2s, opacity .2s, transform .15s;
+        }
+        .lang-pill button.active-lang{
+            background: var(--blue-600); transform: scale(1.08);
+        }
+        .lang-pill button:not(.active-lang){
+            opacity: 0.5;
+        }
+        .lang-pill button:hover:not(.active-lang){
+            opacity: 0.8; transform: scale(1.05);
+        }
+        .mute-btn{ background:linear-gradient(135deg, var(--orange), var(--orange-700)); color:#fff; border:2px solid #fff; width:38px; height:38px; border-radius:50%; cursor:pointer; font-size:1rem; display:flex; align-items:center; justify-content:center; z-index:20; transition: transform .2s, box-shadow .2s; }
+        .mute-btn:hover{ transform:scale(1.1); box-shadow:0 4px 12px rgba(245,158,66,.4); }
+        .mute-btn.muted{ background:linear-gradient(135deg, #999, #777); }
+        .mute-btn svg{ width:20px; height:20px; pointer-events:none; }
+
+        /* Pantalla Inicio */
+        .start-content{ display:flex; flex-direction:column; justify-content:center; align-items:center; flex:1; gap:1rem; padding:1rem; }
+        .advice-box{ background:var(--panel); border-left:4px solid var(--blue-700); padding:1rem 1.2rem; border-radius:12px;
+            color:var(--blue-700); max-width:760px; text-align:center; font-size:clamp(1rem,3vw,1.15rem); }
+        .start-image{ max-width: 300px; width: 100%; margin: 0 auto; }
+
+        /* Pantalla Resumen */
+        .theory-content { padding: 10px; margin: 10px 0; width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+        .theory-box { background: transparent; border-radius: 12px; padding: 1.2rem 1.4rem; line-height: 1.7; color: #444; font-size: clamp(0.85rem, 2.5vw, 1.05rem); }
+        .theory-box h2 { color: var(--blue-dark); font-size: clamp(1.1rem, 3vw, 1.3rem); margin-bottom: 0.6rem; font-weight: 900; }
+        .theory-box > p { margin-bottom: 0.8rem; }
+        .theory-box ul { list-style: none; padding: 0; margin-bottom: 0.5rem; }
+        .theory-box li { padding: 0.35rem 0 0.35rem 1.4rem; position: relative; }
+        .theory-box li::before { content: '•'; position: absolute; left: 0; color: var(--orange); font-weight: bold; font-size: 1.2em; }
+        .theory-box li strong { color: var(--blue-dark); }
+
+        .theory-block { border-radius: 10px; padding: 1rem 1.2rem; margin-top: 0.8rem; }
+        .theory-block h3 { font-size: clamp(1rem, 2.8vw, 1.15rem); margin-bottom: 0.5rem; font-weight: 800; }
+        .theory-block p { margin-bottom: 0.5rem; }
+        .theory-block ul { list-style: none; padding: 0; margin: 0; }
+        .theory-block li { padding: 0.3rem 0 0.3rem 1.3rem; position: relative; }
+        .theory-block li::before { content: '•'; position: absolute; left: 0; font-weight: bold; font-size: 1.2em; }
+        .theory-block li strong { font-weight: 700; }
+
+        .theory-block-paleo { background: #fdecea; border-left: 4px solid var(--pastel-red); }
+        .theory-block-paleo h3 { color: #c0392b; }
+        .theory-block-paleo li::before { color: var(--pastel-red); }
+        .theory-block-paleo li strong { color: #c0392b; }
+
+        .theory-block-neo { background: #e8f5e9; border-left: 4px solid var(--pastel-green); }
+        .theory-block-neo h3 { color: #27ae60; }
+        .theory-block-neo li::before { color: var(--pastel-green); }
+        .theory-block-neo li strong { color: #27ae60; }
+
+        .theory-block-metals { background: #fff8e1; border-left: 4px solid var(--pastel-yellow); }
+        .theory-block-metals h3 { color: #f39c12; }
+        .theory-block-metals li::before { color: var(--pastel-yellow); }
+        .theory-block-metals li strong { color: #f39c12; }
+
+        .theory-summary-table {
+            width: 100%; border-collapse: collapse; margin-top: 0.6rem; font-size: clamp(0.78rem, 2.2vw, 0.95rem);
+            border-radius: 10px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.06); table-layout: fixed;
+        }
+        .theory-summary-table th {
+            padding: 0.6rem 0.5rem; text-align: center; font-weight: 800; color: #fff; font-size: clamp(0.82rem, 2.4vw, 1rem);
+            width: 33.33%;
+        }
+        .theory-summary-table th:nth-child(1) { background: #c0392b; }
+        .theory-summary-table th:nth-child(2) { background: #27ae60; }
+        .theory-summary-table th:nth-child(3) { background: #f39c12; }
+        .theory-summary-table td {
+            padding: 0.55rem 0.5rem; border: 1px solid #e0e0e0; vertical-align: top; text-align: left; line-height: 1.5;
+            width: 33.33%;
+        }
+        .theory-summary-table tr:nth-child(even) td { background: #fafafa; }
+        .theory-summary-table td strong { color: var(--blue-dark); }
+        .highlight-date { color: var(--orange); font-weight: 800; }
+
+        /* Juegos genéricos */
+        .game-container-generic {
+            display: flex; flex-direction: column; align-items: center; gap: 1rem;
+            width: 100%; max-width: 800px; margin: 0 auto; flex: 1;
+        }
+        .image-display {
+            width: 100%; max-width: 600px; aspect-ratio: 4 / 3;
+            display: flex; justify-content: center; align-items: center;
+            background: transparent; padding: 0; border: none; box-shadow: none; border-radius: 0;
+            overflow: hidden;
+        }
+        .image-display img {
+            width: 100%; height: 100%; object-fit: contain;
+            border-radius: 10px;
+            filter: drop-shadow(0 4px 12px rgba(0,0,0,0.15));
+            transition: none;
+        }
+        .image-display img:hover { transform: none; }
+
+        /* Juego 1: Definiciones */
+        .game1-wrapper { display: flex; flex-direction: column; align-items: center; gap: 1.2rem; width: 100%; max-width: 600px; margin: 0 auto; flex: 1; justify-content: flex-start; padding-top: 0.5rem; }
+        .game1-card {
+            background: #fff;
+            border-radius: 18px;
+            padding: 2.2rem 2rem;
+            width: 100%;
+            text-align: center;
+            font-size: clamp(1.25rem, 3.5vw, 1.6rem);
+            color: var(--blue-dark);
+            font-weight: 600;
+            line-height: 1.6;
+            border: 2px solid #e0e0e0;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.1), 0 2px 6px rgba(0,0,0,0.06);
+            transition: border-color 0.2s, box-shadow 0.2s;
+            position: relative;
+            min-height: 160px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .game1-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, var(--pastel-red), var(--pastel-green), var(--pastel-yellow));
+            border-radius: 18px 18px 0 0;
+        }
+        .game1-card.flash-error { border-color: var(--red); animation: shake 0.3s ease-in-out; }
+        .game1-buttons { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; width: 100%; }
+        .game1-buttons .btn { flex: 1; min-width: 0; font-size: clamp(0.9rem, 2.5vw, 1.1rem); padding: 0.9rem 0.6rem; height: auto; min-height: 70px; border-radius: 14px; letter-spacing: 0.3px; flex-direction: column; gap: 0.3rem; }
+        .game1-buttons .btn-icon { font-size: clamp(1.8rem, 4.5vw, 2.4rem); line-height: 1; display: block; }
+        .game1-buttons .btn-label { font-size: clamp(0.85rem, 2.2vw, 1rem); display: block; }
+        .btn-paleo { background: var(--pastel-red); color: #7b241c; }
+        .btn-paleo:hover { filter: brightness(0.92); }
+        .btn-neo { background: var(--pastel-green); color: #1e6f42; }
+        .btn-neo:hover { filter: brightness(0.92); }
+        .btn-metals { background: var(--pastel-yellow); color: #7d6608; }
+        .btn-metals:hover { filter: brightness(0.92); }
+
+        /* Juegos 2, 3, 4: Grid de tarjetas */
+        .game-grid-common {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 8px;
+            width: 100%;
+            flex: 1;
+            overflow-y: auto;
+            padding: 0.5rem;
+            align-content: start;
+        }
+        .game-grid-card {
+            background-color: var(--card-base); color: white; border: 4px solid transparent;
+            border-radius: 10px; padding: 10px 12px; min-height: 70px;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700; font-size: clamp(0.78rem, 1.8vw, 0.95rem); text-align: center;
+            cursor: pointer; transition: all 0.2s ease; user-select: none; position: relative;
+            line-height: 1.3;
+        }
+        .game-grid-card:hover:not(.matched):not(.selected) { transform: scale(1.02); box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
+        .game-grid-card.selected { background-color: var(--card-selected); border-color: transparent; color: white; animation: pulse 1s infinite; }
+        .game-grid-card.matched { background-color: var(--green); border-color: transparent; color: white; transform: scale(1); cursor: default; opacity: 1; box-shadow: 0 3px 10px rgba(46, 204, 113, 0.35); }
+        .game-grid-card.flash-error { animation: shake 0.3s ease-in-out; border-color: var(--red); background-color: var(--red); }
+
+        @media (min-width: 520px) {
+            .game-grid-common { gap: 12px; padding: 0.8rem; }
+            .game-grid-card { min-height: 80px; font-size: clamp(0.88rem, 2vw, 1.05rem); padding: 12px 16px; border-radius: 12px; border-width: 4px; }
+        }
+        @media (min-width: 800px) {
+            .game-grid-common { gap: 14px; padding: 1rem; }
+            .game-grid-card { min-height: 90px; font-size: clamp(0.95rem, 2.2vw, 1.15rem); padding: 14px 18px; border-radius: 14px; border-width: 5px; }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(241, 196, 15, 0.7); }
+            70% { transform: scale(1.02); box-shadow: 0 0 0 10px rgba(241, 196, 15, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(241, 196, 15, 0); }
+        }
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            20% { transform: translateX(-5px); }
+            40% { transform: translateX(5px); }
+            60% { transform: translateX(-5px); }
+            80% { transform: translateX(5px); }
+            100% { transform: translateX(0); }
+        }
+
+        /* Juego 5: Identificar imágenes */
+        .game5-wrapper { display: flex; flex-direction: column; align-items: center; gap: 1rem; width: 100%; max-width: 600px; margin: 0 auto; flex: 1; justify-content: flex-start; padding-top: 0.5rem; }
+        .game5-image-container {
+            width: 100%; max-width: 600px; aspect-ratio: 4 / 3;
+            display: flex; justify-content: center; align-items: center;
+            overflow: hidden;
+        }
+        .game5-image-container img {
+            width: 100%; height: 100%; object-fit: contain;
+            border-radius: 10px;
+            filter: drop-shadow(0 4px 12px rgba(0,0,0,0.15));
+        }
+        .game5-buttons { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; width: 100%; }
+        .game5-buttons .btn { flex: 1; min-width: 0; font-size: clamp(0.9rem, 2.5vw, 1.1rem); padding: 0.9rem 0.6rem; height: auto; min-height: 70px; border-radius: 14px; letter-spacing: 0.3px; flex-direction: column; gap: 0.3rem; }
+        .game5-buttons .btn-icon { font-size: clamp(1.8rem, 4.5vw, 2.4rem); line-height: 1; display: block; }
+        .game5-buttons .btn-label { font-size: clamp(0.85rem, 2.2vw, 1rem); display: block; }
+
+        /* Pantalla Final */
+        .results{ display:flex; flex-direction:column; align-items:center; gap:.6rem; text-align:center; flex:1; justify-content:center;}
+        .final-title{ color:var(--blue-dark); font-weight:900; }
+        .big-score{ font-size:clamp(2.2rem,6vw,3.4rem); color:var(--blue-600); font-weight:900; }
+        .score-title{ font-size:1.0rem; color:var(--blue-700); margin-top:1rem; }
+        .final-time{ color:var(--blue-700); }
+        
+        #trophyBox { display: none; font-size: clamp(4rem, 10vw, 7rem); margin: .5rem 0; text-align: center; align-self: center; animation: bounce 1s ease infinite; color: var(--orange); line-height: 1; }
+        @keyframes bounce { 0%,100%{ transform: translateY(0) scale(1); } 50%{ transform: translateY(-15px) scale(1.1); } }
+        
+        .credit{ color:var(--blue-700); margin-top:1rem; }
+        #finalMsg { font-size: clamp(1.2rem, 4.2vw, 1.8rem); font-weight: 800; color: var(--blue-700); margin-top: 0.6rem; }
+        .school-logo { display: block; width: 160px; max-width: 28%; height: auto; margin-top: 0.8rem; border-radius: 8px; object-fit: contain; }
+        @media (max-width: 899px) { .school-logo { width: 140px; max-width: 160px; } }
+        @media (max-width: 420px) { .school-logo { width: 110px; max-width: 40%; margin-top: 0.6rem; } }
+
+        /* --- ESTILOS DEL HALL OF FAME --- */
+        .hall-of-fame { background: var(--panel); border-radius: 12px; padding: 1rem; margin-top: 1.5rem; width: 100%; max-width: 600px; }
+        .hall-of-fame-title { color: var(--blue-700); font-weight: 800; font-size: 1.2rem; text-align: center; margin-bottom: 0.8rem; }
+        .hall-of-fame-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+        .hall-of-fame-table th { background: var(--blue-600); color: white; padding: 0.5rem; text-align: left; }
+        .hall-of-fame-table td { padding: 0.4rem 0.5rem; border-bottom: 1px solid #ddd; }
+        .hall-of-fame-table tr:last-child td { border-bottom: none; }
+        .hall-of-fame-table tr:nth-child(even) { background-color: rgba(255, 255,255, 0.5); }
+        .hall-of-fame-error, .hall-of-fame-loading { padding: 1rem; text-align: center; color: var(--blue-700); font-style: italic; }
+        .hall-of-fame-error { color: var(--red); }
+
+        .modal-overlay { position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); display:none; justify-content:center; align-items:center; z-index:1000; }
+        .modal-content { background:white; padding:2rem; border-radius:15px; width:90%; max-width:400px; text-align:center; box-shadow:0 10px 30px rgba(0,0,0,0.3); }
+        .modal-input { width:100%; padding:10px; margin:10px 0; border:2px solid #ddd; border-radius:8px; font-size:1rem; }
+        
+        .confetti{ position:fixed; width:10px; height:10px; border-radius:50%; animation: confetti-fall 3s linear forwards; z-index:999; }
+        @keyframes confetti-fall{ 0%{ transform:translate(0, -20px) rotate(0); opacity:1;} 100%{ transform:translate(var(--tx), var(--ty)) rotate(360deg); opacity:0; } }
+    </style>
+</head>
+<body>
+<div class="game-container">
+    <div class="top-controls">
+        <div class="lang-pill">
+            <button id="langEN" class="active-lang" title="English">🇬🇧</button>
+            <button id="langES" title="Español">🇪🇸</button>
+        </div>
+        <button class="mute-btn" id="muteBtn" title="Silenciar/Activar sonido">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+        </button>
+    </div>
+
+    <section class="screen active" id="startScreen">
+        <header>
+            <h1 data-i18n="startTitle">Prehistory</h1>
+            <div class="subtitle" data-i18n="startSubtitle">Learn about the stages of prehistory.</div>
+        </header>
+        <div class="start-content">
+            <div class="advice-box">
+                <span class="advice-text" data-i18n="startAdvice"></span>
+            </div>
+            <button class="btn btn-primary" id="startBtn" data-i18n="startBtn">Start</button>
+            <img class="start-image" src="https://raw.githubusercontent.com/ManuelVS8/Efectos_audio/refs/heads/main/Ni%C3%B1os.png" alt="Kids learning">
+            <div class="hall-of-fame" id="hallOfFame">
+              <div class="hall-of-fame-title">🏆 Mejores puntuaciones 🏆</div>
+              <table class="hall-of-fame-table">
+                  <thead><tr><th>Posición</th><th>Nombre</th><th>Puntos</th><th>Tiempo</th></tr></thead>
+                  <tbody id="hofTableBody"></tbody>
+              </table>
+            </div>
+        </div>
+    </section>
+
+    <section class="screen" id="summaryScreen">
+        <header><h1 data-i18n="summaryTitle">Prehistory</h1></header>
+        <div class="theory-content">
+            <div class="theory-box">
+                <h2 data-i18n="summaryHeading">PREHISTORY</h2>
+                <table class="theory-summary-table">
+                    <thead>
+                        <tr>
+                            <th data-i18n="thPaleo">Palaeolithic</th>
+                            <th data-i18n="thNeo">Neolithic</th>
+                            <th data-i18n="thMetals">Metal Ages</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td data-i18n="tdPaleo1"></td>
+                            <td data-i18n="tdNeo1"></td>
+                            <td data-i18n="tdMetals1"></td>
+                        </tr>
+                        <tr>
+                            <td data-i18n="tdPaleo2"></td>
+                            <td data-i18n="tdNeo2"></td>
+                            <td data-i18n="tdMetals2"></td>
+                        </tr>
+                        <tr>
+                            <td data-i18n="tdPaleo3"></td>
+                            <td data-i18n="tdNeo3"></td>
+                            <td data-i18n="tdMetals3"></td>
+                        </tr>
+                        <tr>
+                            <td data-i18n="tdPaleo4"></td>
+                            <td data-i18n="tdNeo4"></td>
+                            <td data-i18n="tdMetals4"></td>
+                        </tr>
+                        <tr>
+                            <td data-i18n="tdPaleo5"></td>
+                            <td data-i18n="tdNeo5"></td>
+                            <td data-i18n="tdMetals5"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div style="text-align: center; margin-top: 1rem;">
+            <button class="btn btn-primary" id="playBtn" data-i18n="playBtn">Play</button>
+        </div>
+    </section>
+
+    <section class="screen" id="game1Screen">
+        <header>
+            <h1 data-i18n="game1Title">Stages of Prehistory</h1>
+            <div class="subtitle" data-i18n="game1Subtitle">Identify which stage the following statements refer to.</div>
+        </header>
+        <div class="game-info">
+            <div class="timer" id="timerGame1">00:00.0</div>
+            <div class="progress-bar"><div class="progress-fill" id="progressFillGame1"></div></div>
+            <div class="level-indicator" data-i18n="level1">Level 1/5</div>
+        </div>
+        <div class="game1-wrapper">
+            <div class="game1-card" id="game1Card">
+                <span id="game1Text" data-i18n="game1CardText"></span>
+            </div>
+            <div class="game1-buttons" id="game1Buttons">
+                <button class="btn btn-paleo" id="btnPaleo1"><span class="btn-icon">🦴</span><span class="btn-label" data-i18n="btnPaleo">Palaeolithic</span></button>
+                <button class="btn btn-neo" id="btnNeo1"><span class="btn-icon">🌿</span><span class="btn-label" data-i18n="btnNeo">Neolithic</span></button>
+                <button class="btn btn-metals" id="btnMetals1"><span class="btn-icon">⚔️</span><span class="btn-label" data-i18n="btnMetals">Metal Ages</span></button>
+            </div>
+        </div>
+    </section>
+
+    <section class="screen" id="game2Screen">
+        <header>
+            <h1 data-i18n="game2Title">Identify the characteristics of the Palaeolithic</h1>
+        </header>
+        <div class="game-info">
+            <div class="timer" id="timerGame2">00:00.0</div>
+            <div class="progress-bar"><div class="progress-fill" id="progressFillGame2"></div></div>
+            <div class="level-indicator" data-i18n="level2">Level 2/5</div>
+        </div>
+        <div class="game-grid-common" id="game2Grid"></div>
+    </section>
+
+    <section class="screen" id="game3Screen">
+        <header>
+            <h1 data-i18n="game3Title">Identify the characteristics of the Neolithic</h1>
+        </header>
+        <div class="game-info">
+            <div class="timer" id="timerGame3">00:00.0</div>
+            <div class="progress-bar"><div class="progress-fill" id="progressFillGame3"></div></div>
+            <div class="level-indicator" data-i18n="level3">Level 3/5</div>
+        </div>
+        <div class="game-grid-common" id="game3Grid"></div>
+    </section>
+
+    <section class="screen" id="game4Screen">
+        <header>
+            <h1 data-i18n="game4Title">Identify the characteristics of the Metal Ages</h1>
+        </header>
+        <div class="game-info">
+            <div class="timer" id="timerGame4">00:00.0</div>
+            <div class="progress-bar"><div class="progress-fill" id="progressFillGame4"></div></div>
+            <div class="level-indicator" data-i18n="level4">Level 4/5</div>
+        </div>
+        <div class="game-grid-common" id="game4Grid"></div>
+    </section>
+
+    <section class="screen" id="game5Screen">
+        <header>
+            <h1 data-i18n="game5Title">What stage do these images represent?</h1>
+        </header>
+        <div class="game-info">
+            <div class="timer" id="timerGame5">00:00.0</div>
+            <div class="progress-bar"><div class="progress-fill" id="progressFillGame5"></div></div>
+            <div class="level-indicator" data-i18n="level5">Level 5/5</div>
+        </div>
+        <div class="game5-wrapper">
+            <div class="game5-image-container" id="game5Display"></div>
+            <div class="game5-buttons" id="game5Buttons">
+                <button class="btn btn-paleo" id="btnPaleo5"><span class="btn-icon">🦴</span><span class="btn-label" data-i18n="btnPaleo">Palaeolithic</span></button>
+                <button class="btn btn-neo" id="btnNeo5"><span class="btn-icon">🌿</span><span class="btn-label" data-i18n="btnNeo">Neolithic</span></button>
+                <button class="btn btn-metals" id="btnMetals5"><span class="btn-icon">⚔️</span><span class="btn-label" data-i18n="btnMetals">Metal Ages</span></button>
+            </div>
+        </div>
+    </section>
+
+    <section class="screen" id="finalScreen">
+        <header><h1 class="final-title" data-i18n="finalTitle">Stages of Prehistory</h1></header>
+        <div class="results">
+            <div id="trophyBox">🏆</div>
+            <div class="score-title" data-i18n="scoreLabel">Score:</div>
+            <div class="big-score" id="finalScore">0</div>
+            <div class="final-time"><span data-i18n="timeLabel">Time:</span> <span id="finalTime">00:00.0</span></div>
+            <div id="finalMsg" class="subtitle"></div>
+            <button class="btn btn-primary" id="backToMenuBtn" style="background:var(--orange);" data-i18n="backBtn">Back to menu</button>
+            <span class="credit">Creado por Manuel J. Ventura</span>
+            <img class="school-logo" src="https://raw.githubusercontent.com/ManuelVS8/Efectos_audio/refs/heads/main/Siurot.png" alt="School logo" />
+        </div>
+    </section>
+</div>
+
+<div id="submitModal" class="modal-overlay">
+    <div class="modal-content">
+        <h3 data-i18n="modalTitle">Game Over!</h3>
+        <p><span data-i18n="modalTime">Your time:</span> <span id="modalTime">00:00.0</span></p>
+        <input type="text" id="playerName" class="modal-input" placeholder="Nombre" maxlength="15">
+        <input type="text" id="playerSurname" class="modal-input" placeholder="Apellido" maxlength="20">
+        <div style="display: flex; gap: 10px; justify-content: center;">
+            <button id="submitScoreBtn" class="btn btn-primary" data-i18n="modalSave">Save</button>
+            <button id="discardScoreBtn" class="btn btn-ghost" data-i18n="modalCancel">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const SHEET_NAME = "Prehistoria";
+    const APP_SCRIPT_URL = "https://script.google.com/macros/s/AKfycby-VSj-Qgztv3YEItsxoa31GfIE82jgJ6ZRQ0OAiATAsd1qN5b-u4ApPCEF8yhYHRG4OA/exec";
+    
+    let soundEnabled = true;
+    let isMuted = false;
+    let audioCtxRef = null;
+    let startTime = 0;
+    let timerInterval = null;
+    let elapsed = 0;
+    let finalTimeVal = 0;
+    let finalScoreVal = 0;
+    const MIN_ATTEMPTS = 30;
+    let totalAttempts = 0;
+    let currentLang = 'en';
+
+    const audioUrls = {
+        correct: 'https://raw.githubusercontent.com/ManuelVS8/Efectos_audio/refs/heads/main/Correcto.mp3',
+        error: 'https://raw.githubusercontent.com/ManuelVS8/Efectos_audio/refs/heads/main/Error.mp3',
+        tap: 'https://raw.githubusercontent.com/ManuelVS8/Efectos_audio/refs/heads/main/Tap.mp3',
+        victory: 'https://raw.githubusercontent.com/ManuelVS8/Efectos_audio/refs/heads/main/Termin%C3%A9.mp3',
+        completed: 'https://raw.githubusercontent.com/ManuelVS8/Efectos_audio/refs/heads/main/Completado.mp3'
+    };
+    
+    const audioObjects = {};
+    Object.keys(audioUrls).forEach(key => { 
+        const a = new Audio();
+        a.src = audioUrls[key];
+        a.preload = 'auto';
+        audioObjects[key] = a; 
+    });
+
+    function reproducirSonidoCorrecto() { if (!soundEnabled || isMuted) return; const a = audioObjects['correct']; if(!a) return; try { a.currentTime = 0; a.play(); } catch(e){} }
+    function reproducirSonidoError() { if (!soundEnabled || isMuted) return; const a = audioObjects['error']; if(!a) return; try { a.currentTime = 0; a.play(); } catch(e){} }
+    function reproducirSonidoVictoria() { if (!soundEnabled || isMuted) return; const a = audioObjects['victory']; if(!a) return; try { a.currentTime = 0; a.play(); } catch(e){} }
+    function reproducirSonidoCompletado() { if (!soundEnabled || isMuted) return; const a = audioObjects['completed']; if(!a) return; try { a.currentTime = 0; a.play(); } catch(e){} }
+    function reproducirSonidoTap() { if (!soundEnabled || isMuted) return; const a = audioObjects['tap']; if(!a) return; try { a.currentTime = 0; a.play(); } catch(e){} }
+
+    function unlockAudioContext() {
+        try {
+            const ctx = new (window.AudioContext || window.webkitAudioContext)();
+            if (ctx.state === 'suspended') { ctx.resume(); }
+            const buffer = ctx.createBuffer(1, 1, 22050);
+            const source = ctx.createBufferSource();
+            source.buffer = buffer;
+            source.connect(ctx.destination);
+            source.start();
+            audioCtxRef = ctx;
+        } catch(e) {}
+    }
+
+    let ttsForced = false;
+    function forceInitTTS() {
+        if (ttsForced) return;
+        if (window.speechSynthesis.getVoices().length > 0) { ttsForced = true; return; }
+        const u = new SpeechSynthesisUtterance('');
+        u.volume = 0;
+        window.speechSynthesis.speak(u);
+        ttsForced = true;
+    }
+
+    if (window.speechSynthesis) {
+        window.speechSynthesis.onvoiceschanged = function() {
+            ttsForced = true;
+        };
+    }
+
+    function getBestVoice(lang) {
+        const voices = window.speechSynthesis.getVoices();
+        let v = voices.find(voice => voice.name.includes('Google') && voice.lang.startsWith(lang));
+        if (v) return v;
+        v = voices.find(voice => (voice.name.includes('Microsoft') || voice.name.includes('Natural')) && voice.lang.startsWith(lang));
+        if (v) return v;
+        v = voices.find(voice => voice.lang.startsWith(lang));
+        if (v) return v;
+        return null;
+    }
+
+    function speakText(text) {
+        if (!window.speechSynthesis) return;
+        window.speechSynthesis.cancel();
+        const u = new SpeechSynthesisUtterance(text);
+        const lang = currentLang === 'en' ? 'en-GB' : 'es-ES';
+        const voice = getBestVoice(currentLang === 'en' ? 'en' : 'es');
+        if (voice) u.voice = voice;
+        u.lang = lang;
+        u.rate = 0.85;
+        window.speechSynthesis.speak(u);
+    }
+
+    /* ====== LANGUAGE SYSTEM ====== */
+    const i18n = {
+        en: {
+            startTitle: 'Prehistory',
+            startSubtitle: 'Learn about the stages of prehistory.',
+            startAdvice: 'Prehistory is the period spanning from the appearance of <span class="highlight-keyword">human beings</span> (about 2,000,000 years ago) to the invention of <span class="highlight-keyword">writing</span> (3500 BC). Prehistory is divided into three stages: <span class="highlight-keyword">Palaeolithic</span>, <span class="highlight-keyword">Neolithic</span>, and <span class="highlight-keyword">Metal Ages</span>.<br><strong style="display:block; margin-top:0.5rem; text-align: center;">Good luck!</strong>',
+            startBtn: 'Start',
+            playBtn: 'Play',
+            summaryTitle: 'Prehistory',
+            summaryHeading: 'PREHISTORY',
+            thPaleo: 'Palaeolithic',
+            thNeo: 'Neolithic',
+            thMetals: 'Metal Ages',
+            tdPaleo1: '<span class="highlight-date">2 million years ago</span>',
+            tdPaleo2: '<strong>Human beings</strong> appear',
+            tdPaleo3: 'They lived from <strong>hunting, fishing, and gathering</strong>',
+            tdPaleo4: 'They lived in tribes in <strong>caves and huts</strong>',
+            tdPaleo5: 'They were <strong>nomads</strong>. They mastered fire and made tools from stones, wood, and bones.',
+            tdNeo1: '<span class="highlight-date">12,000 years ago</span>',
+            tdNeo2: '<strong>Agriculture and livestock farming</strong> appear',
+            tdNeo3: 'They lived in <strong>villages</strong>',
+            tdNeo4: 'They became <strong>sedentary</strong>',
+            tdNeo5: 'They invented the <strong>wheel</strong> and used pottery for vessels.',
+            tdMetals1: '<span class="highlight-date">6,000 years ago</span>',
+            tdMetals2: 'They learned to use <strong>metals: copper, bronze, and iron</strong>',
+            tdMetals3: 'They made <strong>metal coins</strong>',
+            tdMetals4: 'They built <strong>walled cities</strong>',
+            tdMetals5: '',
+            game1Title: 'Stages of Prehistory',
+            game1Subtitle: 'Identify which stage the following statements refer to.',
+            level1: 'Level 1/5',
+            btnPaleo: 'Palaeolithic',
+            btnNeo: 'Neolithic',
+            btnMetals: 'Metal Ages',
+            game2Title: 'Identify the characteristics of the Palaeolithic',
+            level2: 'Level 2/5',
+            game3Title: 'Identify the characteristics of the Neolithic',
+            level3: 'Level 3/5',
+            game4Title: 'Identify the characteristics of the Metal Ages',
+            level4: 'Level 4/5',
+            game5Title: 'What stage do these images represent?',
+            level5: 'Level 5/5',
+            finalTitle: 'Stages of Prehistory',
+            scoreLabel: 'Score:',
+            timeLabel: 'Time:',
+            backBtn: 'Back to menu',
+            modalTitle: 'Game Over!',
+            modalTime: 'Your time:',
+            modalSave: 'Save',
+            modalCancel: 'Cancel',
+            msgPerfect: 'Brilliant! Perfect score!',
+            msg80: 'Almost there. Keep practising!',
+            msg50: 'Not bad, but you can do better',
+            msg0: 'What a disaster... Are you sure you studied?'
+        },
+        es: {
+            startTitle: 'La prehistoria',
+            startSubtitle: 'Conoce las etapas de la prehistoria.',
+            startAdvice: 'La prehistoria es el periodo que abarca desde la aparición del <span class="highlight-keyword">ser humano</span> (hace unos 2.000.000 millones de años) hasta la aparición de la <span class="highlight-keyword">escritura</span> (3500 a.C.) La prehistoria se divide en tres etapas: <span class="highlight-keyword">Paleolítico</span>, <span class="highlight-keyword">Neolítico</span> y <span class="highlight-keyword">Edad de los Metales</span>.<br><strong style="display:block; margin-top:0.5rem; text-align: center;">¡Ánimo!</strong>',
+            startBtn: 'Comenzar',
+            playBtn: 'Jugar',
+            summaryTitle: 'La prehistoria',
+            summaryHeading: 'PREHISTORIA',
+            thPaleo: 'PALEOLÍTICO',
+            thNeo: 'NEOLÍTICO',
+            thMetals: 'EDAD DE LOS METALES',
+            tdPaleo1: '<span class="highlight-date">2 millones de años</span>',
+            tdPaleo2: 'Aparece el <strong>ser humano</strong>',
+            tdPaleo3: 'Viven de la <strong>caza, pesca y recolección</strong>',
+            tdPaleo4: 'Vivían en tribus en <strong>cuevas y chozas</strong>',
+            tdPaleo5: 'Eran <strong>nómadas</strong>. Dominan el fuego y hacen herramientas con piedras, madera y huesos.',
+            tdNeo1: '<span class="highlight-date">Hace 12.000 años</span>',
+            tdNeo2: 'Aparece la <strong>agricultura y la ganadería</strong>',
+            tdNeo3: 'Viven en <strong>poblados</strong>',
+            tdNeo4: 'Se hacen <strong>sedentarios</strong>',
+            tdNeo5: 'Inventan la <strong>rueda</strong> y emplean cerámica para vasijas.',
+            tdMetals1: '<span class="highlight-date">Hace 6.000 años</span>',
+            tdMetals2: 'Aprenden a usar los <strong>metales: cobre, bronce y hierro</strong>',
+            tdMetals3: 'Fabrican <strong>monedas de metal</strong>',
+            tdMetals4: 'Construyen <strong>ciudades amuralladas</strong>',
+            tdMetals5: '',
+            game1Title: 'Etapas de la prehistoria',
+            game1Subtitle: 'Identifica a qué etapa se refieren las siguientes afirmaciones.',
+            level1: 'Nivel 1/5',
+            btnPaleo: 'Paleolítico',
+            btnNeo: 'Neolítico',
+            btnMetals: 'Edad de los Metales',
+            game2Title: 'Señala las características del Paleolítico',
+            level2: 'Nivel 2/5',
+            game3Title: 'Señala las características del Neolítico',
+            level3: 'Nivel 3/5',
+            game4Title: 'Señala las características de la Edad de los Metales',
+            level4: 'Nivel 4/5',
+            game5Title: '¿Qué etapa representan estas imágenes?',
+            level5: 'Nivel 5/5',
+            finalTitle: 'Etapas de la Prehistoria',
+            scoreLabel: 'Puntuación:',
+            timeLabel: 'Tiempo:',
+            backBtn: 'Volver al menú',
+            modalTitle: '¡Juego Terminado!',
+            modalTime: 'Tu tiempo:',
+            modalSave: 'Guardar',
+            modalCancel: 'Cancelar',
+            msgPerfect: '¡Genial! ¡Puntuación perfecta!',
+            msg80: 'Casi lo logras. ¡Sigue practicando!',
+            msg50: 'No está mal, pero aún puedes hacerlo mejor',
+            msg0: 'Vaya desastre... ¿Seguro que has estudiado?'
+        }
+    };
+
+    function applyLanguage(lang) {
+        currentLang = lang;
+        document.documentElement.lang = lang;
+        document.querySelectorAll('[data-i18n]').forEach(el => {
+            const key = el.getAttribute('data-i18n');
+            if (i18n[lang][key] !== undefined) {
+                el.innerHTML = i18n[lang][key];
+            }
+        });
+        document.getElementById('langEN').classList.toggle('active-lang', lang === 'en');
+        document.getElementById('langES').classList.toggle('active-lang', lang === 'es');
+        document.title = i18n[lang].startTitle;
+    }
+
+    document.getElementById('langEN').onclick = () => { reproducirSonidoTap(); applyLanguage('en'); };
+    document.getElementById('langES').onclick = () => { reproducirSonidoTap(); applyLanguage('es'); };
+
+    /* ====== TRANSLATABLE GAME DATA ====== */
+    const gameDataI18n = {
+        en: {
+            game1: [
+                { stage: 'paleo', text: 'It began 2 million years ago' },
+                { stage: 'paleo', text: 'Human beings appear' },
+                { stage: 'paleo', text: 'They lived from hunting, fishing, and gathering' },
+                { stage: 'paleo', text: 'They lived in tribes in caves and huts' },
+                { stage: 'paleo', text: 'They were nomads' },
+                { stage: 'paleo', text: 'They mastered fire and made tools from stones, wood, and bones.' },
+                { stage: 'neo', text: 'It began 12,000 years ago' },
+                { stage: 'neo', text: 'They invented agriculture and livestock farming' },
+                { stage: 'neo', text: 'They lived in villages' },
+                { stage: 'neo', text: 'They became sedentary' },
+                { stage: 'neo', text: 'They invented the wheel and used pottery for vessels.' },
+                { stage: 'metals', text: 'It began 6,000 years ago' },
+                { stage: 'metals', text: 'They learned to use metals: copper, bronze, and iron.' },
+                { stage: 'metals', text: 'They made metal coins' },
+                { stage: 'metals', text: 'They built walled cities' }
+            ],
+            gridCards: [
+                { stage: 'paleo', text: 'It began 2 million years ago' },
+                { stage: 'paleo', text: 'Human beings appear' },
+                { stage: 'paleo', text: 'They lived from hunting, fishing, and gathering' },
+                { stage: 'paleo', text: 'They were nomads' },
+                { stage: 'neo', text: 'It began 12,000 years ago' },
+                { stage: 'neo', text: 'They invented agriculture and livestock farming' },
+                { stage: 'neo', text: 'They became sedentary' },
+                { stage: 'neo', text: 'They invented the wheel and used pottery for vessels.' },
+                { stage: 'metals', text: 'It began 6,000 years ago' },
+                { stage: 'metals', text: 'They learned to use metals: copper, bronze, and iron.' },
+                { stage: 'metals', text: 'They made metal coins' },
+                { stage: 'metals', text: 'They built walled cities' }
+            ]
+        },
+        es: {
+            game1: [
+                { stage: 'paleo', text: 'Comenzó hace 2 millones de años' },
+                { stage: 'paleo', text: 'Aparece el ser humano' },
+                { stage: 'paleo', text: 'Viven de la caza, pesca y recolección' },
+                { stage: 'paleo', text: 'Vivían en tribus en cuevas y chozas' },
+                { stage: 'paleo', text: 'Eran nómadas' },
+                { stage: 'paleo', text: 'Dominan el fuego y hacen herramientas con piedras, madera y huesos.' },
+                { stage: 'neo', text: 'Comenzó hace 12.000 años' },
+                { stage: 'neo', text: 'Inventan la agricultura y la ganadería' },
+                { stage: 'neo', text: 'Viven en poblados' },
+                { stage: 'neo', text: 'Se hacen sedentarios' },
+                { stage: 'neo', text: 'Inventan la rueda y emplean cerámica para vasijas.' },
+                { stage: 'metals', text: 'Comenzó hace 6.000 años' },
+                { stage: 'metals', text: 'Aprenden a usar los metales: cobre, bronce y hierro.' },
+                { stage: 'metals', text: 'Fabrican monedas de metal' },
+                { stage: 'metals', text: 'Construyen ciudades amuralladas' }
+            ],
+            gridCards: [
+                { stage: 'paleo', text: 'Comenzó hace 2 millones de años' },
+                { stage: 'paleo', text: 'Aparece el ser humano' },
+                { stage: 'paleo', text: 'Viven de la caza, pesca y recolección' },
+                { stage: 'paleo', text: 'Eran nómadas' },
+                { stage: 'neo', text: 'Comenzó hace 12.000 años' },
+                { stage: 'neo', text: 'Inventan la agricultura y la ganadería' },
+                { stage: 'neo', text: 'Se hacen sedentarios' },
+                { stage: 'neo', text: 'Inventan la rueda y emplean cerámica para vasijas.' },
+                { stage: 'metals', text: 'Comenzó hace 6.000 años' },
+                { stage: 'metals', text: 'Aprenden a usar los metales: cobre, bronce y hierro.' },
+                { stage: 'metals', text: 'Fabrican monedas de metal' },
+                { stage: 'metals', text: 'Construyen ciudades amuralladas' }
+            ]
+        }
+    };
+
+    const game5ImageData = [
+        { stage: 'paleo', img: 'https://raw.githubusercontent.com/ManuelVS8/Audios-juegos-SCIENCE/refs/heads/main/C_MEDIO3/Historia/Edades/Paleolitico.png' },
+        { stage: 'neo', img: 'https://raw.githubusercontent.com/ManuelVS8/Audios-juegos-SCIENCE/refs/heads/main/C_MEDIO3/Historia/Edades/Neolitico.png' },
+        { stage: 'metals', img: 'https://raw.githubusercontent.com/ManuelVS8/Audios-juegos-SCIENCE/refs/heads/main/C_MEDIO3/Historia/Edades/Metales.png' }
+    ];
+
+    const svgSoundOn = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>';
+    const svgSoundOff = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>';
+
+    function toggleSound() {
+        if (isMuted) {
+            isMuted = false; soundEnabled = true;
+            document.getElementById('muteBtn').innerHTML = svgSoundOn;
+            document.getElementById('muteBtn').classList.remove('muted');
+            reproducirSonidoTap();
+        } else {
+            isMuted = true; soundEnabled = false;
+            document.getElementById('muteBtn').innerHTML = svgSoundOff;
+            document.getElementById('muteBtn').classList.add('muted');
+        }
+    }
+
+    /* ====== PRECARGA DE IMÁGENES ====== */
+    function preloadImages(urls) {
+        const uniqueUrls = [...new Set(urls)];
+        uniqueUrls.forEach(url => {
+            const img = new Image();
+            img.src = url;
+        });
+    }
+
+    /* ====== UTILIDADES ====== */
+    function showScreen(id) {
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+    }
+
+    function startGlobalTimer() {
+        stopTimer();
+        startTime = Date.now();
+        elapsed = 0;
+        timerInterval = setInterval(() => {
+            const delta = (Date.now() - startTime) / 1000;
+            elapsed = delta;
+            const timeStr = formatTime(delta);
+            if(document.getElementById('timerGame1')) document.getElementById('timerGame1').textContent = timeStr;
+            if(document.getElementById('timerGame2')) document.getElementById('timerGame2').textContent = timeStr;
+            if(document.getElementById('timerGame3')) document.getElementById('timerGame3').textContent = timeStr;
+            if(document.getElementById('timerGame4')) document.getElementById('timerGame4').textContent = timeStr;
+            if(document.getElementById('timerGame5')) document.getElementById('timerGame5').textContent = timeStr;
+        }, 100);
+    }
+
+    function stopTimer() { if (timerInterval) { clearInterval(timerInterval); timerInterval = null; } }
+
+    function formatTime(sec) {
+        const m = Math.floor(sec / 60).toString().padStart(2, '0');
+        const s = Math.floor(sec % 60).toString().padStart(2, '0');
+        const ms = Math.round((sec % 1) * 10);
+        return `${m}:${s}.${ms}`;
+    }
+
+    function updateProgress(id, pct) { document.getElementById(id).style.width = pct + '%'; }
+
+    function shuffle(array) {
+        let currentIndex = array.length, randomIndex;
+        while (currentIndex != 0) {
+            randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex--;
+            [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+        }
+        return array;
+    }
+
+    function calcularPuntuacionFinal() {
+        const score = 100 - ((totalAttempts - MIN_ATTEMPTS) * (100 / MIN_ATTEMPTS));
+        return Math.max(0, Math.round(score));
+    }
+
+    /* ====== INICIO ====== */
+    document.getElementById('startBtn').onclick = () => { 
+        reproducirSonidoTap(); 
+        unlockAudioContext(); 
+        forceInitTTS(); 
+        showScreen('summaryScreen'); 
+    };
+    
+    document.getElementById('playBtn').onclick = () => { 
+        reproducirSonidoTap(); totalAttempts = 0; startGlobalTimer();
+        preloadImages(game5ImageData.map(d => d.img));
+        initGame1();
+    };
+
+    /* ====== JUEGO 1: IDENTIFICAR DEFINICIONES ====== */
+    let game1Items = [];
+    let game1CurrentIndex = 0;
+    const totalItems1 = 15;
+    let game1Locked = false;
+
+    document.getElementById('btnPaleo1').onclick = () => checkAnswerGame1('paleo');
+    document.getElementById('btnNeo1').onclick = () => checkAnswerGame1('neo');
+    document.getElementById('btnMetals1').onclick = () => checkAnswerGame1('metals');
+
+    function initGame1() {
+        showScreen('game1Screen');
+        game1CurrentIndex = 0;
+        game1Locked = false;
+        updateProgress('progressFillGame1', 0);
+        game1Items = shuffle([...gameDataI18n[currentLang].game1]);
+        // Inyectar traducciones dinámicas de las tarjetas al sistema i18n
+        game1Items.forEach((item, index) => {
+            const key = `g1_card_${index}`;
+            i18n.en[key] = gameDataI18n.en.game1.find(d => d.stage === item.stage && d.text === item.text)?.text || item.text;
+            i18n.es[key] = gameDataI18n.es.game1.find(d => d.stage === item.stage && d.text === item.text)?.text || item.text;
+        });
+        loadQuestionGame1();
+    }
+
+    function loadQuestionGame1() {
+        game1Locked = false;
+        const key = `g1_card_${game1CurrentIndex}`;
+        document.getElementById('game1Text').setAttribute('data-i18n', key);
+        document.getElementById('game1Text').innerHTML = i18n[currentLang][key];
+        document.getElementById('game1Card').classList.remove('flash-error');
+        document.getElementById('game1Buttons').style.display = 'grid';
+    }
+
+    function checkAnswerGame1(answer) {
+        if (game1Locked) return;
+        window.speechSynthesis.cancel();
+        totalAttempts++;
+        const correctStage = game1Items[game1CurrentIndex].stage;
+        if (answer === correctStage) {
+            reproducirSonidoCorrecto();
+            game1Locked = true;
+            game1CurrentIndex++;
+            updateProgress('progressFillGame1', (game1CurrentIndex / totalItems1) * 100);
+            if (game1CurrentIndex < totalItems1) {
+                setTimeout(loadQuestionGame1, 200);
+            } else {
+                setTimeout(initGame2, 200);
+            }
+        } else {
+            reproducirSonidoError();
+            game1Locked = true;
+            document.getElementById('game1Card').classList.add('flash-error');
+            setTimeout(() => {
+                document.getElementById('game1Card').classList.remove('flash-error');
+                game1Locked = false;
+            }, 700);
+        }
+    }
+
+    /* ====== JUEGO 2: IDENTIFICAR PALEOLÍTICO ====== */
+    let game2CorrectCount = 0;
+    const totalCorrect2 = 4;
+    let game2Locked = false;
+
+    function initGame2() {
+        showScreen('game2Screen');
+        game2CorrectCount = 0;
+        game2Locked = false;
+        updateProgress('progressFillGame2', 0);
+        const grid = document.getElementById('game2Grid');
+        grid.innerHTML = '';
+        const cards = shuffle([...gameDataI18n[currentLang].gridCards]);
+        cards.forEach((c, index) => {
+            const key = `g2_card_${index}`;
+            i18n.en[key] = gameDataI18n.en.gridCards.find(d => d.stage === c.stage && d.text === c.text)?.text || c.text;
+            i18n.es[key] = gameDataI18n.es.gridCards.find(d => d.stage === c.stage && d.text === c.text)?.text || c.text;
+
+            const card = document.createElement('div');
+            card.className = 'game-grid-card';
+            card.dataset.stage = c.stage;
+            card.dataset.index = index;
+            card.setAttribute('data-i18n', key);
+            card.innerHTML = i18n[currentLang][key];
+            card.onclick = () => handleGridCardClick(card, 'paleo', 2);
+            grid.appendChild(card);
+        });
+    }
+
+    function handleGridCardClick(card, targetStage, gameNum) {
+        if (game2Locked || game3Locked || game4Locked) return;
+        const cardStage = card.dataset.stage;
+
+        if (cardStage === targetStage) {
+            totalAttempts++;
+            if (gameNum === 2) {
+                game2CorrectCount++;
+                if (game2CorrectCount === totalCorrect2) {
+                    reproducirSonidoCompletado();
+                } else {
+                    reproducirSonidoCorrecto();
+                }
+                card.classList.remove('selected');
+                card.classList.add('matched');
+                card.onclick = null;
+                updateProgress('progressFillGame2', (game2CorrectCount / totalCorrect2) * 100);
+                if (game2CorrectCount === totalCorrect2) {
+                    setTimeout(initGame3, 800);
+                }
+            } else if (gameNum === 3) {
+                game3CorrectCount++;
+                if (game3CorrectCount === totalCorrect3) {
+                    reproducirSonidoCompletado();
+                } else {
+                    reproducirSonidoCorrecto();
+                }
+                card.classList.remove('selected');
+                card.classList.add('matched');
+                card.onclick = null;
+                updateProgress('progressFillGame3', (game3CorrectCount / totalCorrect3) * 100);
+                if (game3CorrectCount === totalCorrect3) {
+                    setTimeout(initGame4, 800);
+                }
+            } else if (gameNum === 4) {
+                game4CorrectCount++;
+                if (game4CorrectCount === totalCorrect4) {
+                    reproducirSonidoCompletado();
+                } else {
+                    reproducirSonidoCorrecto();
+                }
+                card.classList.remove('selected');
+                card.classList.add('matched');
+                card.onclick = null;
+                updateProgress('progressFillGame4', (game4CorrectCount / totalCorrect4) * 100);
+                if (game4CorrectCount === totalCorrect4) {
+                    setTimeout(initGame5, 800);
+                }
+            }
+        } else {
+            totalAttempts++;
+            reproducirSonidoTap();
+            card.classList.add('selected');
+            reproducirSonidoError();
+            card.classList.add('flash-error');
+            setTimeout(() => {
+                card.classList.remove('selected', 'flash-error');
+            }, 200);
+        }
+    }
+
+    /* ====== JUEGO 3: IDENTIFICAR NEOLÍTICO ====== */
+    let game3CorrectCount = 0;
+    const totalCorrect3 = 4;
+    let game3Locked = false;
+
+    function initGame3() {
+        showScreen('game3Screen');
+        game3CorrectCount = 0;
+        game3Locked = false;
+        updateProgress('progressFillGame3', 0);
+        const grid = document.getElementById('game3Grid');
+        grid.innerHTML = '';
+        const cards = shuffle([...gameDataI18n[currentLang].gridCards]);
+        cards.forEach((c, index) => {
+            const key = `g3_card_${index}`;
+            i18n.en[key] = gameDataI18n.en.gridCards.find(d => d.stage === c.stage && d.text === c.text)?.text || c.text;
+            i18n.es[key] = gameDataI18n.es.gridCards.find(d => d.stage === c.stage && d.text === c.text)?.text || c.text;
+
+            const card = document.createElement('div');
+            card.className = 'game-grid-card';
+            card.dataset.stage = c.stage;
+            card.dataset.index = index;
+            card.setAttribute('data-i18n', key);
+            card.innerHTML = i18n[currentLang][key];
+            card.onclick = () => handleGridCardClick(card, 'neo', 3);
+            grid.appendChild(card);
+        });
+    }
+
+    /* ====== JUEGO 4: IDENTIFICAR EDAD DE LOS METALES ====== */
+    let game4CorrectCount = 0;
+    const totalCorrect4 = 4;
+    let game4Locked = false;
+
+    function initGame4() {
+        showScreen('game4Screen');
+        game4CorrectCount = 0;
+        game4Locked = false;
+        updateProgress('progressFillGame4', 0);
+        const grid = document.getElementById('game4Grid');
+        grid.innerHTML = '';
+        const cards = shuffle([...gameDataI18n[currentLang].gridCards]);
+        cards.forEach((c, index) => {
+            const key = `g4_card_${index}`;
+            i18n.en[key] = gameDataI18n.en.gridCards.find(d => d.stage === c.stage && d.text === c.text)?.text || c.text;
+            i18n.es[key] = gameDataI18n.es.gridCards.find(d => d.stage === c.stage && d.text === c.text)?.text || c.text;
+
+            const card = document.createElement('div');
+            card.className = 'game-grid-card';
+            card.dataset.stage = c.stage;
+            card.dataset.index = index;
+            card.setAttribute('data-i18n', key);
+            card.innerHTML = i18n[currentLang][key];
+            card.onclick = () => handleGridCardClick(card, 'metals', 4);
+            grid.appendChild(card);
+        });
+    }
+
+    /* ====== JUEGO 5: IDENTIFICAR IMÁGENES ====== */
+    let game5Items = [];
+    let game5CurrentIndex = 0;
+    const totalItems5 = 3;
+    let game5Locked = false;
+
+    document.getElementById('btnPaleo5').onclick = () => checkAnswerGame5('paleo');
+    document.getElementById('btnNeo5').onclick = () => checkAnswerGame5('neo');
+    document.getElementById('btnMetals5').onclick = () => checkAnswerGame5('metals');
+
+    function initGame5() {
+        showScreen('game5Screen');
+        game5CurrentIndex = 0;
+        game5Locked = false;
+        updateProgress('progressFillGame5', 0);
+        game5Items = shuffle([...game5ImageData]);
+        loadQuestionGame5();
+    }
+
+    function loadQuestionGame5() {
+        game5Locked = false;
+        const item = game5Items[game5CurrentIndex];
+        document.getElementById('game5Display').innerHTML = `<img src="${item.img}" alt="Prehistory image">`;
+        document.getElementById('game5Buttons').style.display = 'grid';
+    }
+
+    function checkAnswerGame5(answer) {
+        if (game5Locked) return;
+        window.speechSynthesis.cancel();
+        totalAttempts++;
+        const correctStage = game5Items[game5CurrentIndex].stage;
+        if (answer === correctStage) {
+            reproducirSonidoCorrecto();
+            game5Locked = true;
+            game5CurrentIndex++;
+            updateProgress('progressFillGame5', (game5CurrentIndex / totalItems5) * 100);
+            if (game5CurrentIndex < totalItems5) {
+                setTimeout(loadQuestionGame5, 200);
+            } else {
+                setTimeout(finishGame, 200);
+            }
+        } else {
+            reproducirSonidoError();
+            game5Locked = true;
+            const btnId = answer === 'paleo' ? 'btnPaleo5' : answer === 'neo' ? 'btnNeo5' : 'btnMetals5';
+            const wrongBtn = document.getElementById(btnId);
+            wrongBtn.style.animation = 'shake 0.3s ease-in-out';
+            setTimeout(() => {
+                wrongBtn.style.animation = '';
+                game5Locked = false;
+            }, 700);
+        }
+    }
+
+    /* ====== FINALIZAR ====== */
+    function finishGame() {
+        window.speechSynthesis.cancel();
+        stopTimer();
+        finalTimeVal = elapsed;
+        finalScoreVal = calcularPuntuacionFinal();
+        document.getElementById('finalScore').textContent = finalScoreVal;
+        document.getElementById('finalTime').textContent = formatTime(finalTimeVal);
+        const trophyBox = document.getElementById('trophyBox');
+        const msg = document.getElementById('finalMsg');
+        const t = i18n[currentLang];
+        if (finalScoreVal === 100) {
+            trophyBox.style.display = 'block'; msg.textContent = t.msgPerfect;
+            reproducirSonidoVictoria(); createConfetti();
+        } else if (finalScoreVal >= 80) {
+            trophyBox.style.display = 'none'; msg.textContent = t.msg80; reproducirSonidoCompletado();
+        } else if (finalScoreVal >= 50) {
+            trophyBox.style.display = 'none'; msg.textContent = t.msg50; reproducirSonidoCompletado();
+        } else {
+            trophyBox.style.display = 'none'; msg.textContent = t.msg0; reproducirSonidoCompletado();
+        }
+        showScreen('finalScreen');
+        showSubmitModal(finalTimeVal, finalScoreVal);
+    }
+
+    function createConfetti() {
+        for(let i=0;i<100;i++){
+            setTimeout(()=>{
+                const c = document.createElement('div');
+                c.className = 'confetti';
+                const x = Math.random() * window.innerWidth;
+                const tx = (Math.random() - 0.5) * 200;
+                c.style.left = x + 'px'; c.style.top = '-10px';
+                c.style.backgroundColor = ['#ff595e','#1982c4','#6a4c93','#ffca3a','#8ac926'][Math.floor(Math.random()*5)];
+                c.style.setProperty('--tx', tx + 'px');
+                c.style.setProperty('--ty', window.innerHeight + 20 + 'px');
+                document.body.appendChild(c);
+                setTimeout(() => c.remove(), 3000);
+            }, i * 20);
+        }
+    }
+
+    /* ====== HALL OF FAME ====== */
+    let isHofLoading = false;
+
+    function loadHallOfFame() {
+        if (isHofLoading) return;
+        isHofLoading = true;
+        const tbody = document.getElementById('hofTableBody');
+        tbody.innerHTML = '<tr><td colspan="4" class="hall-of-fame-loading">Cargando datos...</td></tr>';
+        const url = `${APP_SCRIPT_URL}?action=read&sheet=${SHEET_NAME}`;
+        const timeoutId = setTimeout(() => {
+            if(isHofLoading) { tbody.innerHTML = '<tr><td colspan="4" class="hall-of-fame-error">Error de conexión (Timeout).</td></tr>'; isHofLoading = false; }
+        }, 8000);
+        fetch(url)
+            .then(r => { clearTimeout(timeoutId); if(!r.ok) throw new Error("Network response was not ok"); return r.json(); })
+            .then(data => {
+                if (data.status === 'success' && data.data) {
+                    const processedData = data.data.map(row => {
+                        const getVal = (keys) => { for(let key of keys) { if(row[key] !== undefined && row[key] !== "") return row[key]; } return null; };
+                        return { Nombre: getVal(["Nombre", "nombre", "name"]), Apellidos: getVal(["Apellidos", "apellidos", "surname"]), Puntuación: getVal(["Puntuación", "puntuación", "score"]), Tiempo: getVal(["Tiempo", "tiempo", "time"]) };
+                    });
+                    const validData = processedData.filter(row => row.Puntuación !== null && !isNaN(parseFloat(row.Puntuación)));
+                    if (validData.length === 0) {
+                        tbody.innerHTML = '<tr><td colspan="4" class="hall-of-fame-loading">¡Sé el primero en guardar tu puntuación!</td></tr>';
+                    } else {
+                        validData.sort((a, b) => {
+                            const scoreA = parseFloat(a.Puntuación) || 0; const scoreB = parseFloat(b.Puntuación) || 0;
+                            if (scoreB !== scoreA) return scoreB - scoreA;
+                            const timeA = parseFloat(a.Tiempo) || 9999; const timeB = parseFloat(b.Tiempo) || 9999;
+                            return timeA - timeB;
+                        });
+                        tbody.innerHTML = '';
+                        const top10 = validData.slice(0, 10);
+                        for (let i = 0; i < top10.length; i++) {
+                            const item = top10[i];
+                            const tr = document.createElement('tr');
+                            const displayName = `${item.Nombre} ${item.Apellidos}`.trim();
+                            let timeStr = item.Tiempo;
+                            if (!isNaN(parseFloat(item.Tiempo))) { timeStr = formatTime(parseFloat(item.Tiempo)); }
+                            const points = item.Puntuación || 0;
+                            tr.innerHTML = `<td>${i + 1}º</td><td>${displayName}</td><td>${points}</td><td>${timeStr}</td>`;
+                            tbody.appendChild(tr);
+                        }
+                    }
+                } else { tbody.innerHTML = '<tr><td colspan="4" class="hall-of-fame-error">Error de datos.</td></tr>'; }
+            })
+            .catch(e => { clearTimeout(timeoutId); console.error("Error HoF:", e); tbody.innerHTML = '<tr><td colspan="4" class="hall-of-fame-error">Error de conexión.</td></tr>'; })
+            .finally(() => { isHofLoading = false; });
+    }
+
+    function showSubmitModal(time, score) {
+        document.getElementById('modalTime').textContent = formatTime(time);
+        document.getElementById('playerName').value = '';
+        document.getElementById('playerSurname').value = '';
+        document.getElementById('submitModal').style.display = 'flex';
+        const btn = document.getElementById('submitScoreBtn');
+        btn.textContent = i18n[currentLang].modalSave; btn.disabled = false;
+        document.getElementById('playerName').focus();
+    }
+
+    function handleSubmitScore() {
+        const btn = document.getElementById('submitScoreBtn');
+        const nameInput = document.getElementById('playerName');
+        const surnameInput = document.getElementById('playerSurname');
+        reproducirSonidoTap();
+        const payload = { score: finalScoreVal, time: finalTimeVal, name: nameInput.value.trim(), surname: surnameInput.value.trim() };
+        if(payload.name && payload.surname) {
+            const originalText = btn.textContent;
+            btn.textContent = "Enviando..."; btn.disabled = true;
+            fetch(APP_SCRIPT_URL, {
+                method: 'POST', mode: 'no-cors',
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                body: JSON.stringify({ sheet: SHEET_NAME, action: 'write', data: payload })
+            })
+            .then(() => { document.getElementById('submitModal').style.display = 'none'; btn.textContent = originalText; btn.disabled = false; setTimeout(loadHallOfFame, 1500); })
+            .catch(e => { console.error("Error envío:", e); alert("Error al enviar puntuación."); btn.textContent = originalText; btn.disabled = false; });
+        } else { alert("Por favor, rellena nombre y apellido"); }
+    }
+
+    document.getElementById('submitScoreBtn').onclick = handleSubmitScore;
+    document.getElementById('discardScoreBtn').onclick = () => { reproducirSonidoTap(); document.getElementById('submitModal').style.display = 'none'; };
+    document.getElementById('playerName').addEventListener('keypress', function (e) { if (e.key === 'Enter') { document.getElementById('playerSurname').focus(); } });
+    document.getElementById('playerSurname').addEventListener('keypress', function (e) { if (e.key === 'Enter') { handleSubmitScore(); } });
+    document.getElementById('backToMenuBtn').onclick = () => { reproducirSonidoTap(); location.reload(); };
+    document.getElementById('muteBtn').onclick = toggleSound;
+
+    document.addEventListener('DOMContentLoaded', () => { applyLanguage('en'); loadHallOfFame(); });
+</script>
+</body>
+</html>
